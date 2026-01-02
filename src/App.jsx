@@ -1,0 +1,637 @@
+import React, { useState } from 'react';
+import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight } from 'lucide-react';
+
+// --- 데이터: 6가지 유형별 키워드 (사용자 요청 반영) ---
+// 순서: 현실 -> 탐구 -> 예술 -> 사회 -> 진취 -> 관습
+const KEYWORD_DATA = {
+  R: [ // 현실형 (Realistic) - 파랑
+    '솔직', '성실', '검소', '지구력 강함', '신체적 건강', '소박', '말수 적음', '고집', '단순함', '활동적', 
+    '실용적', '현재 중심적', '사물 지향적', '남성적', '직선적', '구체적', '기계적 적성', '운동 능력', '손재주', '도구 조작', 
+    '기술적', '조립', '수리', '생산적', '견고함', '안정감', '강인함', '인내력', '끈기'
+  ],
+  I: [ // 탐구형 (Investigative) - 연한 파랑
+    '호기심 많음', '조직적', '정확함', '지적 추구', '합리적', '학업 열망', '내성적', '신중함', '논리적', '관찰적', 
+    '상징적', '체계적', '창조적', '독립적', '과학적', '추상적 사고', '탐구 정신', '이론적', '연구 지향적', '객관적', 
+    '수학적', '실험적', '복잡한 사고', '지적 호기심', '연구 열정', '정보 수집', '탐구심', '심층 분석', '문제 해결'
+  ],
+  A: [ // 예술형 (Artistic) - 주황
+    '표현력 풍부', '독창적', '비순응적', '감성적', '직관적', '미적 감각', '상상력', '충동적', '독립적', '무질서', 
+    '예술적', '감정적', '개성적', '자유로움', '혁신적', '표현 욕구', '영감적', '심미적', '감수성', '몽상적', 
+    '표현적', '열정적', '즉흥적', '자발적', '비전통적', '변화 추구', '반항적', '개방적', '모험적'
+  ],
+  S: [ // 사회형 (Social) - 초록
+    '협력적', '헌신적', '친근함', '이타적', '공감 능력', '사교적', '책임감', '이상주의적', '도움 지향적', '친절함', 
+    '이해심', '배려심', '봉사 정신', '인간관계 중시', '교육적', '상담적', '치료적', '돌봄', '화합 추구', '봉사적', 
+    '동정심', '양육적', '격려적', '지지적', '공동체 의식', '인도적', '관용적', '수용적', '공감적'
+  ],
+  E: [ // 진취형 (Enterprising) - 빨강
+    '추진력', '신뢰감', '야심적', '설득력', '지배적', '경쟁 지향적', '모험적', '에너지 넘침', '자신감', '사교성', 
+    '낙관주의', '인기', '리더십', '영향력', '목표 지향적', '성취 욕구', '권력 추구', '외향적', '적극적', '결단력', 
+    '통제력', '야망적', '협상력', '열망', '추진적', '성공 지향', '야심', '경영적', '기업가적'
+  ],
+  C: [ // 관습형 (Conventional) - 보라
+    '꼼꼼함', '책임감 강함', '질서 선호', '보수적', '규칙 준수', '순응적', '양심적', '절제력', '효율성', '신뢰감', 
+    '실용적', '차분함', '안정 추구', '계획적', '조직적', '정확성', '세심함', '신중함', '전통적', '안정성', 
+    '일관성', '성실함', '인내심', '정밀함', '절차 지향적', '규범적', '체계성', '신뢰성', '일관됨'
+  ]
+};
+
+// --- 가치관 데이터 ---
+const VALUES = [
+  { id: '성취', text: '어려운 문제를 해결하고 목표를 달성하는 것' },
+  { id: '경제적 보상', text: '높은 수입과 경제적 풍요로움' },
+  { id: '인정', text: '타인과 사회로부터의 인정과 존중' },
+  { id: '안정성', text: '해고 걱정 없이 오래 일할 수 있는 환경' },
+  { id: '자율성', text: '내 방식대로 일하고 시간을 통제하는 것' },
+  { id: '워라밸', text: '일과 개인 생활의 균형' },
+  { id: '봉사', text: '타인을 돕고 사회에 기여하는 것' },
+  { id: '지식 추구', text: '끊임없이 배우고 전문성을 키우는 것' },
+];
+
+// --- RIASEC 유형 설명 (업데이트된 색상 및 명칭) ---
+const RIASEC_DESCRIPTIONS = {
+  R: { 
+    name: '현실형 (Realistic)', 
+    shortName: '현실적',
+    desc: '솔직하고 성실하며, 기계나 도구를 다루는 실용적인 활동을 선호합니다.', 
+    icon: '🔧', 
+    color: 'bg-blue-50 text-blue-700', 
+    barColor: 'bg-blue-600',
+    borderColor: 'border-blue-200',
+    themeColor: 'blue'
+  },
+  I: { 
+    name: '탐구형 (Investigative)', 
+    shortName: '분석적',
+    desc: '호기심이 많고 논리적이며, 지적 탐구와 문제 해결을 즐깁니다.', 
+    icon: '🔍', 
+    color: 'bg-sky-50 text-sky-700', 
+    barColor: 'bg-sky-500',
+    borderColor: 'border-sky-200',
+    themeColor: 'sky'
+  },
+  A: { 
+    name: '예술형 (Artistic)', 
+    shortName: '창의적',
+    desc: '표현력이 풍부하고 독창적이며, 자유로운 예술 활동을 좋아합니다.', 
+    icon: '🎨', 
+    color: 'bg-orange-50 text-orange-700', 
+    barColor: 'bg-orange-500',
+    borderColor: 'border-orange-200',
+    themeColor: 'orange'
+  },
+  S: { 
+    name: '사회형 (Social)', 
+    shortName: '온화함',
+    desc: '이타적이고 친절하며, 타인을 돕고 이해하는 활동에 가치를 둡니다.', 
+    icon: '🤝', 
+    color: 'bg-green-50 text-green-700', 
+    barColor: 'bg-green-600',
+    borderColor: 'border-green-200',
+    themeColor: 'green'
+  },
+  E: { 
+    name: '진취형 (Enterprising)', 
+    shortName: '진취적',
+    desc: '열정적이고 도전적이며, 목표 달성과 리더십 발휘를 선호합니다.', 
+    icon: '🏆', 
+    color: 'bg-red-50 text-red-700', 
+    barColor: 'bg-red-600',
+    borderColor: 'border-red-200',
+    themeColor: 'red'
+  },
+  C: { 
+    name: '관습형 (Conventional)', 
+    shortName: '체계적',
+    desc: '꼼꼼하고 책임감이 강하며, 정해진 규칙과 질서를 따르는 것을 잘합니다.', 
+    icon: '📊', 
+    color: 'bg-purple-50 text-purple-700', 
+    barColor: 'bg-purple-600',
+    borderColor: 'border-purple-200',
+    themeColor: 'purple'
+  },
+};
+
+const PAGINATION_ORDER = ['R', 'I', 'A', 'S', 'E', 'C'];
+
+export default function CareerTest() {
+  const [step, setStep] = useState('intro'); // intro, keywordTest, topKeywordSelect, valueTest, result
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // 0 ~ 5 (R ~ C)
+  
+  // 1단계 선택된 모든 키워드 (Set)
+  const [selectedKeywords, setSelectedKeywords] = useState(new Set()); 
+  
+  // 2단계 최종 선택된 TOP 3 키워드 (Array)
+  const [topKeywords, setTopKeywords] = useState([]); 
+  
+  // 3단계 선택된 가치관 (Array)
+  const [selectedValues, setSelectedValues] = useState([]); 
+
+  // --- 핸들러 ---
+
+  const toggleKeyword = (type, word) => {
+    const key = `${type}-${word}`; // 고유 키 생성
+    const newSet = new Set(selectedKeywords);
+    if (newSet.has(key)) {
+      newSet.delete(key);
+    } else {
+      newSet.add(key);
+    }
+    setSelectedKeywords(newSet);
+  };
+
+  const nextKeywordPage = () => {
+    if (currentPageIndex < PAGINATION_ORDER.length - 1) {
+      setCurrentPageIndex(prev => prev + 1);
+      window.scrollTo(0, 0);
+    } else {
+      // 키워드 선택이 끝나면 Top 3 선택 단계로 이동
+      if (selectedKeywords.size <= 3) {
+        setTopKeywords(Array.from(selectedKeywords));
+        setStep('valueTest');
+      } else {
+        setStep('topKeywordSelect');
+      }
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const toggleTopKeyword = (key) => {
+    if (topKeywords.includes(key)) {
+      setTopKeywords(topKeywords.filter(k => k !== key));
+    } else {
+      if (topKeywords.length < 3) {
+        setTopKeywords([...topKeywords, key]);
+      }
+    }
+  };
+
+  const toggleValue = (valueId) => {
+    if (selectedValues.includes(valueId)) {
+      setSelectedValues(selectedValues.filter(id => id !== valueId));
+    } else {
+      if (selectedValues.length < 3) {
+        setSelectedValues([...selectedValues, valueId]);
+      }
+    }
+  };
+
+  const restart = () => {
+    setStep('intro');
+    setSelectedKeywords(new Set());
+    setTopKeywords([]);
+    setSelectedValues([]);
+    setCurrentPageIndex(0);
+  };
+
+  // --- 결과 계산 ---
+  const calculateResult = () => {
+    const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+    
+    // RIASEC 점수는 '전체 선택된 키워드'를 기준으로 계산
+    selectedKeywords.forEach(key => {
+      const type = key.split('-')[0];
+      if (scores[type] !== undefined) {
+        scores[type]++;
+      }
+    });
+
+    // 1. 점수 내림차순 (최고 유형 찾기용)
+    const sortedTypes = Object.entries(scores).sort(([, a], [, b]) => b - a);
+    
+    // 2. R-I-A-S-E-C 고정 순서 (그래프용)
+    const fixedOrderTypes = PAGINATION_ORDER.map(type => [type, scores[type]]);
+
+    return { scores, sortedTypes, fixedOrderTypes };
+  };
+
+  // --- 렌더링 ---
+
+  // 1. 인트로
+  if (step === 'intro') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-4 font-sans">
+        <div className="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+          <div className="bg-gray-900 p-12 text-center text-white">
+            <MousePointerClick className="w-16 h-16 mx-auto mb-6 opacity-90" />
+            <h1 className="text-4xl font-extrabold mb-4">커리어 키워드 진단</h1>
+            <p className="text-gray-300 text-lg">나를 설명하는 키워드를 선택하여<br/>숨겨진 직업 흥미와 가치관을 찾아보세요.</p>
+          </div>
+          <div className="p-10 space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="bg-white p-2 rounded-full shadow-sm">
+                  <CheckCircle className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-lg">STEP 1. 키워드 탐색 (6단계)</h3>
+                  <p className="text-gray-500 text-sm mt-1">
+                    현실적 → 분석적 → 창의적 → 온화함 → 진취적 → 체계적 순서로<br/>
+                    나에게 맞는 키워드를 자유롭게 선택합니다.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="bg-white p-2 rounded-full shadow-sm">
+                  <Trophy className="w-6 h-6 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-lg">STEP 2. 핵심 DNA 결정</h3>
+                  <p className="text-gray-500 text-sm mt-1">선택한 단어들 중 나를 가장 잘 나타내는 최정예 단어 3개를 추려냅니다.</p>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => setStep('keywordTest')}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-6 rounded-2xl transition-all duration-300 text-xl shadow-lg flex items-center justify-center gap-3 mt-4"
+            >
+              진단 시작하기 <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. 키워드 선택 (순차적 페이지)
+  if (step === 'keywordTest') {
+    const currentType = PAGINATION_ORDER[currentPageIndex]; // 'R', 'I', ...
+    const typeInfo = RIASEC_DESCRIPTIONS[currentType];
+    const currentKeywords = KEYWORD_DATA[currentType];
+    const progress = ((currentPageIndex + 1) / PAGINATION_ORDER.length) * 100;
+
+    // 테마 컬러 클래스 동적 생성 (Tailwind)
+    const themeBtnClass = {
+      blue: 'border-blue-200 text-blue-600 hover:bg-blue-50 bg-white',
+      sky: 'border-sky-200 text-sky-600 hover:bg-sky-50 bg-white',
+      orange: 'border-orange-200 text-orange-600 hover:bg-orange-50 bg-white',
+      green: 'border-green-200 text-green-600 hover:bg-green-50 bg-white',
+      red: 'border-red-200 text-red-600 hover:bg-red-50 bg-white',
+      purple: 'border-purple-200 text-purple-600 hover:bg-purple-50 bg-white',
+    }[typeInfo.themeColor];
+
+    const themeBtnSelectedClass = {
+      blue: 'bg-blue-600 border-blue-600 text-white shadow-md transform scale-105',
+      sky: 'bg-sky-500 border-sky-500 text-white shadow-md transform scale-105',
+      orange: 'bg-orange-500 border-orange-500 text-white shadow-md transform scale-105',
+      green: 'bg-green-600 border-green-600 text-white shadow-md transform scale-105',
+      red: 'bg-red-600 border-red-600 text-white shadow-md transform scale-105',
+      purple: 'bg-purple-600 border-purple-600 text-white shadow-md transform scale-105',
+    }[typeInfo.themeColor];
+
+    return (
+      <div className={`min-h-screen py-8 px-4 font-sans transition-colors duration-500 ${typeInfo.color}`}>
+        <div className="max-w-4xl mx-auto">
+          {/* Header & Progress */}
+          <div className="mb-8 bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/50">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-3">
+                <span className="text-4xl">{typeInfo.icon}</span>
+                <div>
+                  <h2 className="text-2xl font-extrabold text-gray-800">
+                    {currentPageIndex + 1}. {typeInfo.shortName} 키워드
+                  </h2>
+                  <p className="text-gray-500 text-sm font-medium">{typeInfo.desc}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-sm font-bold text-gray-400">{currentPageIndex + 1} / 6</span>
+              </div>
+            </div>
+            <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-500 ${typeInfo.barColor}`}
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Keywords Grid */}
+          <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10">
+            <p className="text-center text-gray-500 mb-8 font-medium">
+              아래 단어들 중 <span className="text-gray-800 font-bold underline">나에게 해당되는 것</span>을 모두 선택해주세요.
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-10">
+              {currentKeywords.map((word, idx) => {
+                const key = `${currentType}-${word}`;
+                const isSelected = selectedKeywords.has(key);
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => toggleKeyword(currentType, word)}
+                    className={`
+                      py-3 px-1 rounded-xl text-lg font-bold transition-all duration-200 border-2 relative overflow-hidden break-keep
+                      ${isSelected ? themeBtnSelectedClass : themeBtnClass}
+                    `}
+                  >
+                    {word}
+                    {isSelected && <Check className="w-4 h-4 absolute top-1 right-1 opacity-50" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                onClick={nextKeywordPage}
+                className="bg-gray-900 hover:bg-black text-white text-lg font-bold py-4 px-16 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 flex items-center gap-2"
+              >
+                {currentPageIndex < 5 ? '다음 유형으로' : '키워드 선택 완료'} 
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Top 3 키워드 선택
+  if (step === 'topKeywordSelect') {
+    return (
+      <div className="min-h-screen bg-amber-50 py-8 px-4 font-sans flex items-center">
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-amber-100">
+            <div className="text-center mb-8">
+              <div className="inline-block p-3 bg-amber-100 rounded-full mb-4">
+                <Trophy className="w-8 h-8 text-amber-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">최종 선택: 나의 핵심 키워드</h2>
+              <p className="text-gray-600 text-lg break-keep">
+                총 <strong>{selectedKeywords.size}개의 단어</strong>를 선택하셨습니다.<br/>
+                이 중에서 진짜 나를 가장 잘 나타내는 <strong>3개</strong>만 골라주세요.
+              </p>
+              <p className="text-amber-600 font-bold mt-2 text-xl">({topKeywords.length} / 3 선택됨)</p>
+            </div>
+
+            <div className="flex flex-wrap gap-3 justify-center mb-10 max-h-[400px] overflow-y-auto p-2">
+              {Array.from(selectedKeywords).map((key) => {
+                const [type, word] = key.split('-');
+                const isSelected = topKeywords.includes(key);
+                const isDisabled = !isSelected && topKeywords.length >= 3;
+                const barColor = RIASEC_DESCRIPTIONS[type].barColor; // bg-color
+                
+                return (
+                  <button
+                    key={key}
+                    onClick={() => toggleTopKeyword(key)}
+                    disabled={isDisabled}
+                    className={`
+                      px-5 py-3 rounded-full text-lg font-bold transition-all duration-200 border-2 flex items-center gap-2
+                      ${isSelected 
+                        ? 'bg-amber-500 border-amber-500 text-white shadow-lg transform scale-110 z-10' 
+                        : isDisabled 
+                          ? 'opacity-40 bg-gray-50 border-gray-100 cursor-not-allowed' 
+                          : `bg-white border-gray-200 text-gray-600 hover:border-amber-300 hover:bg-amber-50`}
+                    `}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${barColor}`}></span>
+                    {word}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                onClick={() => setStep('valueTest')}
+                disabled={topKeywords.length !== 3}
+                className={`
+                  text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-all
+                  ${topKeywords.length === 3 
+                    ? 'bg-gray-900 text-white hover:bg-black hover:-translate-y-1' 
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'}
+                `}
+              >
+                가치관 선택으로 이동
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 4. 가치관 선택
+  if (step === 'valueTest') {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans flex items-center">
+        <div className="max-w-3xl mx-auto w-full">
+          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border border-gray-100">
+            <div className="text-center mb-8">
+              <div className="inline-block p-3 bg-pink-100 rounded-full mb-4">
+                <Heart className="w-8 h-8 text-pink-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">가치관 선택</h2>
+              <p className="text-gray-500 text-lg">직업을 가질 때 가장 중요한 <strong>3가지</strong>를 선택해주세요.</p>
+              <p className="text-pink-600 font-medium mt-2">({selectedValues.length} / 3 선택됨)</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-10">
+              {VALUES.map((val) => {
+                const isSelected = selectedValues.includes(val.id);
+                const isDisabled = !isSelected && selectedValues.length >= 3;
+                return (
+                  <button
+                    key={val.id}
+                    onClick={() => toggleValue(val.id)}
+                    disabled={isDisabled}
+                    className={`
+                      p-5 rounded-2xl text-left border-2 transition-all duration-200 flex items-center gap-4
+                      ${isSelected 
+                        ? 'bg-pink-50 border-pink-500 ring-1 ring-pink-500' 
+                        : isDisabled 
+                          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-gray-100' 
+                          : 'bg-white border-gray-200 hover:border-pink-300 hover:bg-pink-50'}
+                    `}
+                  >
+                    <div className={`
+                      w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0
+                      ${isSelected ? 'bg-pink-500 border-pink-500' : 'border-gray-300'}
+                    `}>
+                      {isSelected && <Check className="w-4 h-4 text-white" />}
+                    </div>
+                    <div>
+                      <div className="font-bold text-gray-800 text-lg">{val.id}</div>
+                      <div className="text-sm text-gray-500">{val.text}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                onClick={() => setStep('result')}
+                disabled={selectedValues.length !== 3}
+                className={`
+                  text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-all
+                  ${selectedValues.length === 3 
+                    ? 'bg-gray-900 text-white hover:bg-black hover:-translate-y-1' 
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'}
+                `}
+              >
+                결과 보기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 5. 결과 화면
+  if (step === 'result') {
+    const { scores, sortedTypes, fixedOrderTypes } = calculateResult();
+    const topTypeKey = sortedTypes[0][0]; // "R"
+    const topTypeInfo = RIASEC_DESCRIPTIONS[topTypeKey];
+    
+    // 2순위, 3순위
+    const secondType = sortedTypes[1];
+    const thirdType = sortedTypes[2];
+
+    return (
+      <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
+        <div className="max-w-4xl mx-auto space-y-6">
+          
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+            {/* 상단 헤더: 1순위 유형 컬러에 맞춤 */}
+            <div className={`${topTypeInfo.barColor} text-white p-10 text-center`}>
+              <h1 className="text-3xl font-bold mb-2">진단 결과 대시보드</h1>
+              <p className="opacity-90 font-medium">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
+            </div>
+
+            <div className="p-8 md:p-12">
+              
+              {/* [메인 섹션] 나의 흥미 유형 */}
+              <div className="flex flex-col md:flex-row gap-8 items-center justify-center mb-12 border-b border-gray-100 pb-12">
+                <div className="text-center md:text-left flex-1">
+                  <div className={`inline-block px-4 py-1.5 ${topTypeInfo.color} font-bold rounded-full mb-5 text-sm uppercase tracking-wide`}>
+                    나의 최고 강점 유형
+                  </div>
+                  <h2 className="text-5xl font-extrabold text-gray-900 mb-5">
+                    당신은 <span className={topTypeInfo.color.split(' ')[1]}>{topTypeInfo.name}</span> 입니다
+                  </h2>
+                  <p className="text-xl text-gray-600 leading-relaxed mb-6 break-keep">
+                    {topTypeInfo.desc}
+                  </p>
+                </div>
+                <div className={`
+                  w-56 h-56 rounded-full flex items-center justify-center text-8xl shadow-xl border-8 transform hover:scale-105 transition-transform duration-300
+                  ${topTypeInfo.color} ${topTypeInfo.borderColor}
+                `}>
+                  {topTypeInfo.icon}
+                </div>
+              </div>
+
+              {/* [대시보드 그리드] 핵심 키워드 & 직업 가치관 */}
+              <div className="grid md:grid-cols-2 gap-8 mb-12">
+                
+                {/* 1. 핵심 키워드 */}
+                <div className="bg-amber-50/50 rounded-3xl p-8 border border-amber-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-xl text-amber-800 mb-6 flex items-center gap-2">
+                    <Trophy className="w-6 h-6 text-amber-600" /> 
+                    MY CORE DNA (핵심 키워드)
+                  </h3>
+                  <div className="flex-1 flex flex-col justify-center gap-4">
+                    {topKeywords.map((key, idx) => {
+                       const type = key.split('-')[0];
+                       const typeName = RIASEC_DESCRIPTIONS[type].shortName; // shortName 사용 (현실적, 분석적...)
+                       const barColor = RIASEC_DESCRIPTIONS[type].barColor;
+                       return (
+                        <div key={key} className="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 flex items-center gap-4">
+                          <div className={`w-10 h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}>
+                            {idx + 1}
+                          </div>
+                          <span className="font-bold text-xl text-gray-800">{key.split('-')[1]}</span>
+                          <span className="ml-auto text-xs text-gray-500 font-medium px-2.5 py-1 bg-gray-100 rounded-full">
+                            {typeName}
+                          </span>
+                        </div>
+                       );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. 직업 가치관 */}
+                <div className="bg-pink-50/50 rounded-3xl p-8 border border-pink-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-xl text-pink-800 mb-6 flex items-center gap-2">
+                    <Heart className="w-6 h-6 text-pink-600" /> 
+                    직업 가치관 (우선순위)
+                  </h3>
+                  <div className="flex-1 flex flex-col justify-center gap-4">
+                    {selectedValues.map((valId, idx) => (
+                      <div key={valId} className="bg-white p-4 rounded-2xl shadow-sm border border-pink-100 flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-pink-400 text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">
+                          {idx + 1}
+                        </div>
+                        <span className="font-bold text-xl text-gray-800">{valId}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* [하단] 전체 통계 차트 (R-I-A-S-E-C 순서 고정) */}
+              <div className="grid md:grid-cols-3 gap-12 pt-10 border-t border-gray-100">
+                <div className="md:col-span-2">
+                  <h3 className="font-bold text-xl text-gray-800 mb-6 flex items-center gap-2">
+                    <BarChart2 className="w-6 h-6" /> 유형별 분포도 (RIASEC)
+                  </h3>
+                  <div className="space-y-4">
+                    {fixedOrderTypes.map(([type, score]) => {
+                       const desc = RIASEC_DESCRIPTIONS[type];
+                       const isTop = type === topTypeKey;
+                       return (
+                        <div key={type} className="flex items-center gap-4 text-sm group">
+                          <div className="w-36 font-bold text-gray-600 flex items-center gap-2">
+                            <span className={`w-3 h-3 rounded-full ${desc.barColor}`}></span>
+                            {desc.shortName} ({type})
+                          </div>
+                          <div className="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
+                              style={{ width: `${(score / 30) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="w-8 text-right font-bold text-gray-700 text-lg">{score}</div>
+                        </div>
+                       );
+                    })}
+                  </div>
+                </div>
+                
+                {/* 2,3순위 요약 */}
+                <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
+                  <div className="flex items-center gap-2 mb-4 text-gray-500 font-bold text-sm uppercase tracking-wider">
+                    <TrendingUp className="w-4 h-4" /> Next Steps
+                  </div>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">보완 및 확장 전략</h4>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    당신의 주무기는 <strong>{topTypeInfo.shortName}</strong>입니다.<br/><br/>
+                    여기에 2순위인 <strong className={RIASEC_DESCRIPTIONS[secondType[0]].color.split(' ')[1]}>{RIASEC_DESCRIPTIONS[secondType[0]].shortName}</strong>의 특성을 결합하면 더 큰 시너지를 낼 수 있습니다.<br/><br/>
+                    부족한 부분은 {RIASEC_DESCRIPTIONS[thirdType[0]].shortName} 성향이 강한 동료와 협업하여 보완하세요.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="flex justify-center pb-16">
+            <button
+              onClick={restart}
+              className="flex items-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-4 px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5"
+            >
+              <RefreshCw className="w-5 h-5" />
+              다시 검사하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
