@@ -211,41 +211,41 @@ export default function CareerTest() {
   if (step === 'intro') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-4 font-sans">
-        <div className="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-          <div className="bg-gray-900 p-12 text-center text-white">
-            <MousePointerClick className="w-16 h-16 mx-auto mb-6 opacity-90" />
-            <h1 className="text-4xl font-extrabold mb-4">커리어 키워드 진단</h1>
-            <p className="text-gray-300 text-lg">나를 설명하는 키워드를 선택하여<br/>숨겨진 직업 흥미와 가치관을 찾아보세요.</p>
+        <div className="max-w-2xl w-full bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+          <div className="bg-gray-900 p-6 md:p-10 lg:p-12 text-center text-white">
+            <MousePointerClick className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 opacity-90" />
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 md:mb-4">커리어 키워드 진단</h1>
+            <p className="text-gray-300 text-sm md:text-base lg:text-lg px-2">나를 설명하는 키워드를 선택하여<br className="hidden sm:block"/>숨겨진 직업 흥미와 가치관을 찾아보세요.</p>
           </div>
-          <div className="p-10 space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                <div className="bg-white p-2 rounded-full shadow-sm">
-                  <CheckCircle className="w-6 h-6 text-blue-600" />
+          <div className="p-6 md:p-8 lg:p-10 space-y-4 md:space-y-6">
+            <div className="space-y-3 md:space-y-4">
+              <div className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="bg-white p-1.5 md:p-2 rounded-full shadow-sm shrink-0">
+                  <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-gray-800 text-lg">STEP 1. 키워드 탐색 (6단계)</h3>
-                  <p className="text-gray-500 text-sm mt-1">
-                    현실적 → 분석적 → 창의적 → 온화함 → 진취적 → 체계적 순서로<br/>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-bold text-gray-800 text-base md:text-lg">STEP 1. 키워드 탐색 (6단계)</h3>
+                  <p className="text-gray-500 text-xs md:text-sm mt-1 break-keep">
+                    현실적 → 분석적 → 창의적 → 온화함 → 진취적 → 체계적 순서로<br className="hidden sm:block"/>
                     나에게 맞는 키워드를 자유롭게 선택합니다.
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                <div className="bg-white p-2 rounded-full shadow-sm">
-                  <Trophy className="w-6 h-6 text-amber-500" />
+              <div className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="bg-white p-1.5 md:p-2 rounded-full shadow-sm shrink-0">
+                  <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-500" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-gray-800 text-lg">STEP 2. 핵심 DNA 결정</h3>
-                  <p className="text-gray-500 text-sm mt-1">선택한 단어들 중 나를 가장 잘 나타내는 최정예 단어 3개를 추려냅니다.</p>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-bold text-gray-800 text-base md:text-lg">STEP 2. 핵심 DNA 결정</h3>
+                  <p className="text-gray-500 text-xs md:text-sm mt-1 break-keep">선택한 단어들 중 나를 가장 잘 나타내는 최정예 단어 3개를 추려냅니다.</p>
                 </div>
               </div>
             </div>
             <button
               onClick={() => setStep('keywordTest')}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 px-6 rounded-2xl transition-all duration-300 text-xl shadow-lg flex items-center justify-center gap-3 mt-4"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 md:py-5 px-6 rounded-xl md:rounded-2xl transition-all duration-300 text-base md:text-lg lg:text-xl shadow-lg flex items-center justify-center gap-2 md:gap-3 mt-4"
             >
-              진단 시작하기 <ChevronRight className="w-6 h-6" />
+              진단 시작하기 <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </button>
           </div>
         </div>
@@ -280,25 +280,25 @@ export default function CareerTest() {
     }[typeInfo.themeColor];
 
     return (
-      <div className={`min-h-screen py-8 px-4 font-sans transition-colors duration-500 ${typeInfo.color}`}>
+      <div className={`min-h-screen py-4 md:py-8 px-3 md:px-4 font-sans transition-colors duration-500 ${typeInfo.color}`}>
         <div className="max-w-4xl mx-auto">
           {/* Header & Progress */}
-          <div className="mb-8 bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/50">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-4xl">{typeInfo.icon}</span>
-                <div>
-                  <h2 className="text-2xl font-extrabold text-gray-800">
+          <div className="mb-4 md:mb-8 bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-white/50">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3 md:mb-4">
+              <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                <span className="text-2xl md:text-3xl lg:text-4xl shrink-0">{typeInfo.icon}</span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg md:text-xl lg:text-2xl font-extrabold text-gray-800 break-keep">
                     {currentPageIndex + 1}. {typeInfo.shortName} 키워드
                   </h2>
-                  <p className="text-gray-500 text-sm font-medium">{typeInfo.desc}</p>
+                  <p className="text-gray-500 text-xs md:text-sm font-medium break-keep">{typeInfo.desc}</p>
                 </div>
               </div>
-              <div className="text-right">
-                <span className="text-sm font-bold text-gray-400">{currentPageIndex + 1} / 6</span>
+              <div className="text-right shrink-0">
+                <span className="text-xs md:text-sm font-bold text-gray-400">{currentPageIndex + 1} / 6</span>
               </div>
             </div>
-            <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-gray-200 h-1.5 md:h-2 rounded-full overflow-hidden">
               <div 
                 className={`h-full rounded-full transition-all duration-500 ${typeInfo.barColor}`}
                 style={{ width: `${progress}%` }}
@@ -307,12 +307,12 @@ export default function CareerTest() {
           </div>
 
           {/* Keywords Grid */}
-          <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10">
-            <p className="text-center text-gray-500 mb-8 font-medium">
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-10">
+            <p className="text-center text-gray-500 mb-4 md:mb-8 text-sm md:text-base font-medium px-2">
               아래 단어들 중 <span className="text-gray-800 font-bold underline">나에게 해당되는 것</span>을 모두 선택해주세요.
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-10">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3 lg:gap-4 mb-6 md:mb-10">
               {currentKeywords.map((word, idx) => {
                 const key = `${currentType}-${word}`;
                 const isSelected = selectedKeywords.has(key);
@@ -321,12 +321,12 @@ export default function CareerTest() {
                     key={idx}
                     onClick={() => toggleKeyword(currentType, word)}
                     className={`
-                      py-3 px-1 rounded-xl text-lg font-bold transition-all duration-200 border-2 relative overflow-hidden break-keep
+                      py-2.5 md:py-3 px-1 rounded-lg md:rounded-xl text-sm md:text-base lg:text-lg font-bold transition-all duration-200 border-2 relative overflow-hidden break-keep
                       ${isSelected ? themeBtnSelectedClass : themeBtnClass}
                     `}
                   >
                     {word}
-                    {isSelected && <Check className="w-4 h-4 absolute top-1 right-1 opacity-50" />}
+                    {isSelected && <Check className="w-3 h-3 md:w-4 md:h-4 absolute top-1 right-1 opacity-50" />}
                   </button>
                 );
               })}
@@ -335,10 +335,10 @@ export default function CareerTest() {
             <div className="flex justify-center">
               <button
                 onClick={nextKeywordPage}
-                className="bg-gray-900 hover:bg-black text-white text-lg font-bold py-4 px-16 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 flex items-center gap-2"
+                className="bg-gray-900 hover:bg-black text-white text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-8 md:px-12 lg:px-16 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 flex items-center gap-2"
               >
-                {currentPageIndex < 5 ? '다음 유형으로' : '키워드 선택 완료'} 
-                <ArrowRight className="w-5 h-5" />
+                <span className="whitespace-nowrap">{currentPageIndex < 5 ? '다음 유형으로' : '키워드 선택 완료'}</span>
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             </div>
           </div>
@@ -350,22 +350,22 @@ export default function CareerTest() {
   // 3. Top 3 키워드 선택
   if (step === 'topKeywordSelect') {
     return (
-      <div className="min-h-screen bg-amber-50 py-8 px-4 font-sans flex items-center">
+      <div className="min-h-screen bg-amber-50 py-4 md:py-8 px-3 md:px-4 font-sans flex items-center">
         <div className="max-w-4xl mx-auto w-full">
-          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border-2 border-amber-100">
-            <div className="text-center mb-8">
-              <div className="inline-block p-3 bg-amber-100 rounded-full mb-4">
-                <Trophy className="w-8 h-8 text-amber-600" />
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-8 xl:p-10 border-2 border-amber-100">
+            <div className="text-center mb-6 md:mb-8">
+              <div className="inline-block p-2 md:p-3 bg-amber-100 rounded-full mb-3 md:mb-4">
+                <Trophy className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">최종 선택: 나의 핵심 키워드</h2>
-              <p className="text-gray-600 text-lg break-keep">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2 px-2">최종 선택: 나의 핵심 키워드</h2>
+              <p className="text-gray-600 text-sm md:text-base lg:text-lg break-keep px-2">
                 총 <strong>{selectedKeywords.size}개의 단어</strong>를 선택하셨습니다.<br/>
                 이 중에서 진짜 나를 가장 잘 나타내는 <strong>3개</strong>만 골라주세요.
               </p>
-              <p className="text-amber-600 font-bold mt-2 text-xl">({topKeywords.length} / 3 선택됨)</p>
+              <p className="text-amber-600 font-bold mt-2 text-lg md:text-xl">({topKeywords.length} / 3 선택됨)</p>
             </div>
 
-            <div className="flex flex-wrap gap-3 justify-center mb-10 max-h-[400px] overflow-y-auto p-2">
+            <div className="flex flex-wrap gap-2 md:gap-3 justify-center mb-6 md:mb-10 max-h-[300px] md:max-h-[400px] overflow-y-auto p-2">
               {Array.from(selectedKeywords).map((key) => {
                 const [type, word] = key.split('-');
                 const isSelected = topKeywords.includes(key);
@@ -378,7 +378,7 @@ export default function CareerTest() {
                     onClick={() => toggleTopKeyword(key)}
                     disabled={isDisabled}
                     className={`
-                      px-5 py-3 rounded-full text-lg font-bold transition-all duration-200 border-2 flex items-center gap-2
+                      px-3 md:px-4 lg:px-5 py-2 md:py-2.5 lg:py-3 rounded-full text-sm md:text-base lg:text-lg font-bold transition-all duration-200 border-2 flex items-center gap-1.5 md:gap-2
                       ${isSelected 
                         ? 'bg-amber-500 border-amber-500 text-white shadow-lg transform scale-110 z-10' 
                         : isDisabled 
@@ -386,8 +386,8 @@ export default function CareerTest() {
                           : `bg-white border-gray-200 text-gray-600 hover:border-amber-300 hover:bg-amber-50`}
                     `}
                   >
-                    <span className={`w-2 h-2 rounded-full ${barColor}`}></span>
-                    {word}
+                    <span className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${barColor} shrink-0`}></span>
+                    <span className="break-keep">{word}</span>
                   </button>
                 );
               })}
@@ -398,7 +398,7 @@ export default function CareerTest() {
                 onClick={() => setStep('valueTest')}
                 disabled={topKeywords.length !== 3}
                 className={`
-                  text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-all
+                  text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-8 md:px-10 lg:px-12 rounded-full shadow-lg transition-all
                   ${topKeywords.length === 3 
                     ? 'bg-gray-900 text-white hover:bg-black hover:-translate-y-1' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'}
@@ -416,19 +416,19 @@ export default function CareerTest() {
   // 4. 가치관 선택
   if (step === 'valueTest') {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans flex items-center">
+      <div className="min-h-screen bg-gray-50 py-4 md:py-8 px-3 md:px-4 font-sans flex items-center">
         <div className="max-w-3xl mx-auto w-full">
-          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border border-gray-100">
-            <div className="text-center mb-8">
-              <div className="inline-block p-3 bg-pink-100 rounded-full mb-4">
-                <Heart className="w-8 h-8 text-pink-600" />
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-8 xl:p-10 border border-gray-100">
+            <div className="text-center mb-6 md:mb-8">
+              <div className="inline-block p-2 md:p-3 bg-pink-100 rounded-full mb-3 md:mb-4">
+                <Heart className="w-6 h-6 md:w-8 md:h-8 text-pink-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">가치관 선택</h2>
-              <p className="text-gray-500 text-lg">직업을 가질 때 가장 중요한 <strong>3가지</strong>를 선택해주세요.</p>
-              <p className="text-pink-600 font-medium mt-2">({selectedValues.length} / 3 선택됨)</p>
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">가치관 선택</h2>
+              <p className="text-gray-500 text-sm md:text-base lg:text-lg px-2">직업을 가질 때 가장 중요한 <strong>3가지</strong>를 선택해주세요.</p>
+              <p className="text-pink-600 font-medium mt-2 text-base md:text-lg">({selectedValues.length} / 3 선택됨)</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 mb-10">
+            <div className="grid md:grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-10">
               {VALUES.map((val) => {
                 const isSelected = selectedValues.includes(val.id);
                 const isDisabled = !isSelected && selectedValues.length >= 3;
@@ -438,7 +438,7 @@ export default function CareerTest() {
                     onClick={() => toggleValue(val.id)}
                     disabled={isDisabled}
                     className={`
-                      p-5 rounded-2xl text-left border-2 transition-all duration-200 flex items-center gap-4
+                      p-3 md:p-4 lg:p-5 rounded-xl md:rounded-2xl text-left border-2 transition-all duration-200 flex items-center gap-3 md:gap-4
                       ${isSelected 
                         ? 'bg-pink-50 border-pink-500 ring-1 ring-pink-500' 
                         : isDisabled 
@@ -447,14 +447,14 @@ export default function CareerTest() {
                     `}
                   >
                     <div className={`
-                      w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0
+                      w-5 h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center shrink-0
                       ${isSelected ? 'bg-pink-500 border-pink-500' : 'border-gray-300'}
                     `}>
-                      {isSelected && <Check className="w-4 h-4 text-white" />}
+                      {isSelected && <Check className="w-3 h-3 md:w-4 md:h-4 text-white" />}
                     </div>
-                    <div>
-                      <div className="font-bold text-gray-800 text-lg">{val.id}</div>
-                      <div className="text-sm text-gray-500">{val.text}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold text-gray-800 text-base md:text-lg">{val.id}</div>
+                      <div className="text-xs md:text-sm text-gray-500 break-keep">{val.text}</div>
                     </div>
                   </button>
                 );
@@ -466,7 +466,7 @@ export default function CareerTest() {
                 onClick={() => setStep('result')}
                 disabled={selectedValues.length !== 3}
                 className={`
-                  text-lg font-bold py-4 px-12 rounded-full shadow-lg transition-all
+                  text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-8 md:px-10 lg:px-12 rounded-full shadow-lg transition-all
                   ${selectedValues.length === 3 
                     ? 'bg-gray-900 text-white hover:bg-black hover:-translate-y-1' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'}
@@ -492,33 +492,33 @@ export default function CareerTest() {
     const thirdType = sortedTypes[2];
 
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="min-h-screen bg-gray-50 p-3 md:p-4 lg:p-8 font-sans">
+        <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
           
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border border-gray-100">
             {/* 상단 헤더: 1순위 유형 컬러에 맞춤 */}
-            <div className={`${topTypeInfo.barColor} text-white p-10 text-center`}>
-              <h1 className="text-3xl font-bold mb-2">진단 결과 대시보드</h1>
-              <p className="opacity-90 font-medium">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
+            <div className={`${topTypeInfo.barColor} text-white p-6 md:p-8 lg:p-10 text-center`}>
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">진단 결과 대시보드</h1>
+              <p className="opacity-90 font-medium text-sm md:text-base">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
             </div>
 
-            <div className="p-8 md:p-12">
+            <div className="p-4 md:p-6 lg:p-8 xl:p-12">
               
               {/* [메인 섹션] 나의 흥미 유형 */}
-              <div className="flex flex-col md:flex-row gap-8 items-center justify-center mb-12 border-b border-gray-100 pb-12">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-center mb-8 md:mb-12 border-b border-gray-100 pb-8 md:pb-12">
                 <div className="text-center md:text-left flex-1">
-                  <div className={`inline-block px-4 py-1.5 ${topTypeInfo.color} font-bold rounded-full mb-5 text-sm uppercase tracking-wide`}>
+                  <div className={`inline-block px-3 md:px-4 py-1 md:py-1.5 ${topTypeInfo.color} font-bold rounded-full mb-3 md:mb-5 text-xs md:text-sm uppercase tracking-wide`}>
                     나의 최고 강점 유형
                   </div>
-                  <h2 className="text-5xl font-extrabold text-gray-900 mb-5">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-gray-900 mb-3 md:mb-5">
                     당신은 <span className={topTypeInfo.color.split(' ')[1]}>{topTypeInfo.name}</span> 입니다
                   </h2>
-                  <p className="text-xl text-gray-600 leading-relaxed mb-6 break-keep">
+                  <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed mb-4 md:mb-6 break-keep">
                     {topTypeInfo.desc}
                   </p>
                 </div>
                 <div className={`
-                  w-56 h-56 rounded-full flex items-center justify-center text-8xl shadow-xl border-8 transform hover:scale-105 transition-transform duration-300
+                  w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full flex items-center justify-center text-5xl md:text-6xl lg:text-7xl xl:text-8xl shadow-xl border-4 md:border-8 transform hover:scale-105 transition-transform duration-300 shrink-0
                   ${topTypeInfo.color} ${topTypeInfo.borderColor}
                 `}>
                   {topTypeInfo.icon}
@@ -526,26 +526,26 @@ export default function CareerTest() {
               </div>
 
               {/* [대시보드 그리드] 핵심 키워드 & 직업 가치관 */}
-              <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <div className="grid md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12">
                 
                 {/* 1. 핵심 키워드 */}
-                <div className="bg-amber-50/50 rounded-3xl p-8 border border-amber-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="font-bold text-xl text-amber-800 mb-6 flex items-center gap-2">
-                    <Trophy className="w-6 h-6 text-amber-600" /> 
+                <div className="bg-amber-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-amber-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-amber-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-600" /> 
                     MY CORE DNA (핵심 키워드)
                   </h3>
-                  <div className="flex-1 flex flex-col justify-center gap-4">
+                  <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
                     {topKeywords.map((key, idx) => {
                        const type = key.split('-')[0];
                        const typeName = RIASEC_DESCRIPTIONS[type].shortName; // shortName 사용 (현실적, 분석적...)
                        const barColor = RIASEC_DESCRIPTIONS[type].barColor;
                        return (
-                        <div key={key} className="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}>
+                        <div key={key} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-amber-100 flex items-center gap-3 md:gap-4">
+                          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm`}>
                             {idx + 1}
                           </div>
-                          <span className="font-bold text-xl text-gray-800">{key.split('-')[1]}</span>
-                          <span className="ml-auto text-xs text-gray-500 font-medium px-2.5 py-1 bg-gray-100 rounded-full">
+                          <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep flex-1">{key.split('-')[1]}</span>
+                          <span className="ml-auto text-xs text-gray-500 font-medium px-2 md:px-2.5 py-1 bg-gray-100 rounded-full shrink-0">
                             {typeName}
                           </span>
                         </div>
@@ -555,18 +555,18 @@ export default function CareerTest() {
                 </div>
 
                 {/* 2. 직업 가치관 */}
-                <div className="bg-pink-50/50 rounded-3xl p-8 border border-pink-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="font-bold text-xl text-pink-800 mb-6 flex items-center gap-2">
-                    <Heart className="w-6 h-6 text-pink-600" /> 
+                <div className="bg-pink-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-pink-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-pink-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <Heart className="w-5 h-5 md:w-6 md:h-6 text-pink-600" /> 
                     직업 가치관 (우선순위)
                   </h3>
-                  <div className="flex-1 flex flex-col justify-center gap-4">
+                  <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
                     {selectedValues.map((valId, idx) => (
-                      <div key={valId} className="bg-white p-4 rounded-2xl shadow-sm border border-pink-100 flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-pink-400 text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">
+                      <div key={valId} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-pink-100 flex items-center gap-3 md:gap-4">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-400 text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm">
                           {idx + 1}
                         </div>
-                        <span className="font-bold text-xl text-gray-800">{valId}</span>
+                        <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep">{valId}</span>
                       </div>
                     ))}
                   </div>
@@ -574,28 +574,28 @@ export default function CareerTest() {
               </div>
 
               {/* [하단] 전체 통계 차트 (R-I-A-S-E-C 순서 고정) */}
-              <div className="grid md:grid-cols-3 gap-12 pt-10 border-t border-gray-100">
+              <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-12 pt-6 md:pt-10 border-t border-gray-100">
                 <div className="md:col-span-2">
-                  <h3 className="font-bold text-xl text-gray-800 mb-6 flex items-center gap-2">
-                    <BarChart2 className="w-6 h-6" /> 유형별 분포도 (RIASEC)
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-gray-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <BarChart2 className="w-5 h-5 md:w-6 md:h-6" /> 유형별 분포도 (RIASEC)
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     {fixedOrderTypes.map(([type, score]) => {
                        const desc = RIASEC_DESCRIPTIONS[type];
                        const isTop = type === topTypeKey;
                        return (
-                        <div key={type} className="flex items-center gap-4 text-sm group">
-                          <div className="w-36 font-bold text-gray-600 flex items-center gap-2">
-                            <span className={`w-3 h-3 rounded-full ${desc.barColor}`}></span>
-                            {desc.shortName} ({type})
+                        <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
+                          <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
+                            <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
+                            <span className="break-keep">{desc.shortName} ({type})</span>
                           </div>
-                          <div className="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
                             <div 
                               className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
                               style={{ width: `${(score / 30) * 100}%` }}
                             ></div>
                           </div>
-                          <div className="w-8 text-right font-bold text-gray-700 text-lg">{score}</div>
+                          <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
                         </div>
                        );
                     })}
@@ -603,12 +603,12 @@ export default function CareerTest() {
                 </div>
                 
                 {/* 2,3순위 요약 */}
-                <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
-                  <div className="flex items-center gap-2 mb-4 text-gray-500 font-bold text-sm uppercase tracking-wider">
-                    <TrendingUp className="w-4 h-4" /> Next Steps
+                <div className="bg-gray-50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3 md:mb-4 text-gray-500 font-bold text-xs md:text-sm uppercase tracking-wider">
+                    <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> Next Steps
                   </div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-4">보완 및 확장 전략</h4>
-                  <p className="text-gray-600 leading-relaxed text-sm">
+                  <h4 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">보완 및 확장 전략</h4>
+                  <p className="text-gray-600 leading-relaxed text-xs md:text-sm break-keep">
                     당신의 주무기는 <strong>{topTypeInfo.shortName}</strong>입니다.<br/><br/>
                     여기에 2순위인 <strong className={RIASEC_DESCRIPTIONS[secondType[0]].color.split(' ')[1]}>{RIASEC_DESCRIPTIONS[secondType[0]].shortName}</strong>의 특성을 결합하면 더 큰 시너지를 낼 수 있습니다.<br/><br/>
                     부족한 부분은 {RIASEC_DESCRIPTIONS[thirdType[0]].shortName} 성향이 강한 동료와 협업하여 보완하세요.
@@ -619,12 +619,12 @@ export default function CareerTest() {
             </div>
           </div>
 
-          <div className="flex justify-center pb-16">
+          <div className="flex justify-center pb-8 md:pb-12 lg:pb-16">
             <button
               onClick={restart}
-              className="flex items-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-4 px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5"
+              className="flex items-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-3 md:py-4 px-6 md:px-8 lg:px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5 text-sm md:text-base"
             >
-              <RefreshCw className="w-5 h-5" />
+              <RefreshCw className="w-4 h-4 md:w-5 md:h-5" />
               다시 검사하기
             </button>
           </div>
