@@ -83,7 +83,7 @@ const RIASEC_DESCRIPTIONS = {
   },
   S: { 
     name: '사회형 (Social)', 
-    shortName: '온화함',
+    shortName: '사회형',
     desc: '이타적이고 친절하며, 타인을 돕고 이해하는 활동에 가치를 둡니다.', 
     icon: '🤝', 
     color: 'bg-green-50 text-green-700', 
@@ -103,7 +103,7 @@ const RIASEC_DESCRIPTIONS = {
   },
   C: { 
     name: '관습형 (Conventional)', 
-    shortName: '체계적',
+    shortName: '관습형',
     desc: '꼼꼼하고 책임감이 강하며, 정해진 규칙과 질서를 따르는 것을 잘합니다.', 
     icon: '📊', 
     color: 'bg-purple-50 text-purple-700', 
@@ -319,7 +319,7 @@ export default function CareerTest() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-gray-800 text-base md:text-lg">STEP 1. 키워드 탐색 (6단계)</h3>
                   <p className="text-gray-500 text-xs md:text-sm mt-1 break-keep">
-                    현실적 → 분석적 → 창의적 → 온화함 → 진취적 → 체계적 순서로<br className="hidden sm:block"/>
+                    현실적 → 분석적 → 창의적 → 사회형 → 진취적 → 관습형 순서로<br className="hidden sm:block"/>
                     나에게 맞는 키워드를 자유롭게 선택합니다.
                   </p>
                 </div>
