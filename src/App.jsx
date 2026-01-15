@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight, Share2, Copy, CheckCircle2 } from 'lucide-react';
+import { supabase } from './lib/supabase';
 
 // --- 데이터: 6가지 유형별 키워드 (사용자 요청 반영) ---
 // 순서: 현실 -> 탐구 -> 예술 -> 사회 -> 진취 -> 관습
@@ -115,7 +116,7 @@ const RIASEC_DESCRIPTIONS = {
 const PAGINATION_ORDER = ['R', 'I', 'A', 'S', 'E', 'C'];
 
 export default function CareerTest() {
-  const [step, setStep] = useState('intro'); // intro, keywordTest, topKeywordSelect, valueTest, result
+  const [step, setStep] = useState('intro'); // intro, keywordTest, topKeywordSelect, valueTest, result, shared
   const [currentPageIndex, setCurrentPageIndex] = useState(0); // 0 ~ 5 (R ~ C)
   
   // 1단계 선택된 모든 키워드 (Set)
@@ -125,7 +126,13 @@ export default function CareerTest() {
   const [topKeywords, setTopKeywords] = useState([]); 
   
   // 3단계 선택된 가치관 (Array)
-  const [selectedValues, setSelectedValues] = useState([]); 
+  const [selectedValues, setSelectedValues] = useState([]);
+
+  // 공유 관련 상태
+  const [shareLink, setShareLink] = useState('');
+  const [isSharing, setIsSharing] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [sharedResult, setSharedResult] = useState(null); 
 
   // --- 핸들러 ---
 
@@ -182,6 +189,92 @@ export default function CareerTest() {
     setTopKeywords([]);
     setSelectedValues([]);
     setCurrentPageIndex(0);
+    setShareLink('');
+    setSharedResult(null);
+    // URL에서 공유 ID 제거
+    window.history.replaceState({}, document.title, window.location.pathname);
+  };
+
+  // 공유 링크로 접속했을 때 결과 로드
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const shareId = urlParams.get('share');
+    
+    if (shareId) {
+      loadSharedResult(shareId);
+    }
+  }, []);
+
+  const loadSharedResult = async (shareId) => {
+    try {
+      const { data, error } = await supabase
+        .from('career_results')
+        .select('*')
+        .eq('share_id', shareId)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setSharedResult(data);
+        setSelectedKeywords(new Set(data.selected_keywords || []));
+        setTopKeywords(data.top_keywords || []);
+        setSelectedValues(data.selected_values || []);
+        setStep('shared');
+      }
+    } catch (error) {
+      console.error('공유 결과 로드 실패:', error);
+      alert('공유 링크를 불러올 수 없습니다. 링크가 올바른지 확인해주세요.');
+    }
+  };
+
+  const handleShare = async () => {
+    setIsSharing(true);
+    try {
+      const { scores } = calculateResult();
+      
+      // 공유 ID 생성 (랜덤 문자열)
+      const shareId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      
+      // Supabase에 저장할 데이터
+      const resultData = {
+        share_id: shareId,
+        scores: scores,
+        top_type: Object.entries(scores).sort(([, a], [, b]) => b - a)[0][0],
+        selected_keywords: Array.from(selectedKeywords),
+        top_keywords: topKeywords,
+        selected_values: selectedValues
+      };
+
+      // Supabase에 저장
+      const { data, error } = await supabase
+        .from('career_results')
+        .insert([resultData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // 공유 링크 생성
+      const link = `${window.location.origin}${window.location.pathname}?share=${shareId}`;
+      setShareLink(link);
+    } catch (error) {
+      console.error('공유 실패:', error);
+      alert('공유 링크 생성에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(shareLink);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (error) {
+      console.error('복사 실패:', error);
+      alert('링크 복사에 실패했습니다.');
+    }
   };
 
   // --- 결과 계산 ---
@@ -481,6 +574,162 @@ export default function CareerTest() {
     );
   }
 
+  // 5-1. 공유 링크로 접속한 결과 화면
+  if (step === 'shared' && sharedResult) {
+    const scores = sharedResult.scores;
+    const sortedTypes = Object.entries(scores).sort(([, a], [, b]) => b - a);
+    const fixedOrderTypes = PAGINATION_ORDER.map(type => [type, scores[type] || 0]);
+    const topTypeKey = sortedTypes[0][0];
+    const topTypeInfo = RIASEC_DESCRIPTIONS[topTypeKey];
+    const secondType = sortedTypes[1];
+    const thirdType = sortedTypes[2];
+
+    return (
+      <div className="min-h-screen bg-gray-50 p-3 md:p-4 lg:p-8 font-sans">
+        <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
+          {/* 공유된 결과 표시 배지 */}
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-lg text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Share2 className="w-5 h-5 md:w-6 md:h-6" />
+              <h2 className="text-lg md:text-xl lg:text-2xl font-bold">공유된 진단 결과</h2>
+            </div>
+            <p className="text-sm md:text-base opacity-90">다른 사람이 공유한 커리어 진단 결과입니다</p>
+          </div>
+
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+            <div className={`${topTypeInfo.barColor} text-white p-6 md:p-8 lg:p-10 text-center`}>
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">진단 결과 대시보드</h1>
+              <p className="opacity-90 font-medium text-sm md:text-base">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
+            </div>
+
+            <div className="p-4 md:p-6 lg:p-8 xl:p-12">
+              {/* [메인 섹션] 나의 흥미 유형 */}
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-center mb-8 md:mb-12 border-b border-gray-100 pb-8 md:pb-12">
+                <div className="text-center md:text-left flex-1">
+                  <div className={`inline-block px-3 md:px-4 py-1 md:py-1.5 ${topTypeInfo.color} font-bold rounded-full mb-3 md:mb-5 text-xs md:text-sm uppercase tracking-wide`}>
+                    나의 최고 강점 유형
+                  </div>
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-gray-900 mb-3 md:mb-5">
+                    당신은 <span className={topTypeInfo.color.split(' ')[1]}>{topTypeInfo.name}</span> 입니다
+                  </h2>
+                  <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed mb-4 md:mb-6 break-keep">
+                    {topTypeInfo.desc}
+                  </p>
+                </div>
+                <div className={`
+                  w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full flex items-center justify-center text-5xl md:text-6xl lg:text-7xl xl:text-8xl shadow-xl border-4 md:border-8 transform hover:scale-105 transition-transform duration-300 shrink-0
+                  ${topTypeInfo.color} ${topTypeInfo.borderColor}
+                `}>
+                  {topTypeInfo.icon}
+                </div>
+              </div>
+
+              {/* [대시보드 그리드] 핵심 키워드 & 직업 가치관 */}
+              <div className="grid md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12">
+                {/* 1. 핵심 키워드 */}
+                <div className="bg-amber-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-amber-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-amber-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-600" /> 
+                    MY CORE DNA (핵심 키워드)
+                  </h3>
+                  <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
+                    {topKeywords.map((key, idx) => {
+                       const type = key.split('-')[0];
+                       const typeName = RIASEC_DESCRIPTIONS[type].shortName;
+                       const barColor = RIASEC_DESCRIPTIONS[type].barColor;
+                       return (
+                        <div key={key} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-amber-100 flex items-center gap-3 md:gap-4">
+                          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm`}>
+                            {idx + 1}
+                          </div>
+                          <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep flex-1">{key.split('-')[1]}</span>
+                          <span className="ml-auto text-xs text-gray-500 font-medium px-2 md:px-2.5 py-1 bg-gray-100 rounded-full shrink-0">
+                            {typeName}
+                          </span>
+                        </div>
+                       );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. 직업 가치관 */}
+                <div className="bg-pink-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-pink-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-pink-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <Heart className="w-5 h-5 md:w-6 md:h-6 text-pink-600" /> 
+                    직업 가치관 (우선순위)
+                  </h3>
+                  <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
+                    {selectedValues.map((valId, idx) => (
+                      <div key={valId} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-pink-100 flex items-center gap-3 md:gap-4">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-400 text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm">
+                          {idx + 1}
+                        </div>
+                        <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep">{valId}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* [하단] 전체 통계 차트 */}
+              <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-12 pt-6 md:pt-10 border-t border-gray-100">
+                <div className="md:col-span-2">
+                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-gray-800 mb-4 md:mb-6 flex items-center gap-2">
+                    <BarChart2 className="w-5 h-5 md:w-6 md:h-6" /> 유형별 분포도 (RIASEC)
+                  </h3>
+                  <div className="space-y-3 md:space-y-4">
+                    {fixedOrderTypes.map(([type, score]) => {
+                       const desc = RIASEC_DESCRIPTIONS[type];
+                       const isTop = type === topTypeKey;
+                       return (
+                        <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
+                          <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
+                            <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
+                            <span className="break-keep">{desc.shortName} ({type})</span>
+                          </div>
+                          <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
+                              style={{ width: `${(score / 30) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
+                        </div>
+                       );
+                    })}
+                  </div>
+                </div>
+                
+                {/* 2,3순위 요약 */}
+                <div className="bg-gray-50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3 md:mb-4 text-gray-500 font-bold text-xs md:text-sm uppercase tracking-wider">
+                    <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> Next Steps
+                  </div>
+                  <h4 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">보완 및 확장 전략</h4>
+                  <p className="text-gray-600 leading-relaxed text-xs md:text-sm break-keep">
+                    당신의 주무기는 <strong>{topTypeInfo.shortName}</strong>입니다.<br/><br/>
+                    여기에 2순위인 <strong className={RIASEC_DESCRIPTIONS[secondType[0]].color.split(' ')[1]}>{RIASEC_DESCRIPTIONS[secondType[0]].shortName}</strong>의 특성을 결합하면 더 큰 시너지를 낼 수 있습니다.<br/><br/>
+                    부족한 부분은 {RIASEC_DESCRIPTIONS[thirdType[0]].shortName} 성향이 강한 동료와 협업하여 보완하세요.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-center pb-8 md:pb-12 lg:pb-16">
+            <button
+              onClick={restart}
+              className="flex items-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-3 md:py-4 px-6 md:px-8 lg:px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5 text-sm md:text-base"
+            >
+              <RefreshCw className="w-4 h-4 md:w-5 md:h-5" />
+              나도 진단하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 5. 결과 화면
   if (step === 'result') {
     const { scores, sortedTypes, fixedOrderTypes } = calculateResult();
@@ -619,10 +868,76 @@ export default function CareerTest() {
             </div>
           </div>
 
-          <div className="flex justify-center pb-8 md:pb-12 lg:pb-16">
+          {/* 공유 링크 표시 영역 */}
+          {shareLink && (
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border-2 border-blue-200 shadow-lg">
+              <div className="text-center mb-4 md:mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full mb-3">
+                  <Share2 className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                  <span className="text-sm md:text-base font-bold text-blue-700">공유 링크가 생성되었습니다</span>
+                </div>
+                <p className="text-gray-600 text-sm md:text-base">
+                  아래 링크를 복사하여 <strong className="text-gray-800">판매자에게 전달</strong>해주세요.
+                </p>
+              </div>
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                <div className="flex-1 w-full md:w-auto">
+                  <label className="block text-sm md:text-base font-bold text-gray-700 mb-2">공유 링크</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={shareLink}
+                      readOnly
+                      className="flex-1 px-4 py-2 md:py-3 bg-white border-2 border-gray-300 rounded-lg md:rounded-xl text-xs md:text-sm font-mono break-all"
+                    />
+                    <button
+                      onClick={copyToClipboard}
+                      className="px-4 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg md:rounded-xl transition-all flex items-center gap-2 font-bold text-sm md:text-base shadow-md"
+                    >
+                      {isCopied ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5" />
+                          복사됨!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 md:w-5 md:h-5" />
+                          복사
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 pb-8 md:pb-12 lg:pb-16">
+            {shareLink ? (
+              // 공유 링크가 생성된 경우 - 링크 표시는 위에서 이미 표시됨
+              null
+            ) : (
+              <button
+                onClick={handleShare}
+                disabled={isSharing}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 md:py-4 px-6 md:px-8 lg:px-10 rounded-full transition-all shadow-lg hover:-translate-y-0.5 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSharing ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
+                    공유 링크 생성 중...
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-4 h-4 md:w-5 md:h-5" />
+                    결과 공유하기
+                  </>
+                )}
+              </button>
+            )}
             <button
               onClick={restart}
-              className="flex items-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-3 md:py-4 px-6 md:px-8 lg:px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5 text-sm md:text-base"
+              className="flex items-center justify-center gap-2 bg-white text-gray-800 hover:bg-gray-50 font-bold py-3 md:py-4 px-6 md:px-8 lg:px-10 rounded-full transition-all shadow-lg border border-gray-200 hover:-translate-y-0.5 text-sm md:text-base"
             >
               <RefreshCw className="w-4 h-4 md:w-5 md:h-5" />
               다시 검사하기
