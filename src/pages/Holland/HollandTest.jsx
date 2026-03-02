@@ -751,16 +751,22 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
     // Context Variables
     const hasExtraContext = birkmanContext || tciContext;
     let bInterestName = '', bBehaviorName = '', bNeedsName = '', bStressName = '';
+    let bInterest = '', bBehavior = '', bNeeds = '', bStress = '';
     let topKeywordLabels = '';
     let valLabels = '';
     let promptJob = '', promptEnv = '', promptBestBoss = '', promptWorstBoss = '', promptBestTeammate = '';
 
     if (hasExtraContext) {
       if (birkmanContext) {
-        bInterestName = COLOR_NAMES[birkmanContext.interestColor] || '알 수 없음';
-        bBehaviorName = COLOR_NAMES[birkmanContext.behaviorColor] || '알 수 없음';
-        bNeedsName = COLOR_NAMES[birkmanContext.needsColor] || '알 수 없음';
-        bStressName = COLOR_NAMES[birkmanContext.stressColor] || '알 수 없음';
+        bInterest = birkmanContext.interestColor || '';
+        bBehavior = birkmanContext.behaviorColor || '';
+        bNeeds = birkmanContext.needsColor || '';
+        bStress = birkmanContext.stressColor || '';
+
+        bInterestName = COLOR_NAMES[bInterest] || '알 수 없음';
+        bBehaviorName = COLOR_NAMES[bBehavior] || '알 수 없음';
+        bNeedsName = COLOR_NAMES[bNeeds] || '알 수 없음';
+        bStressName = COLOR_NAMES[bStress] || '알 수 없음';
       }
 
       topKeywordLabels = topKeywords.map(k => k.split('-')[1]).join(', ');
