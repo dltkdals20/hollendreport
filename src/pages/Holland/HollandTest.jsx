@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight, Share2, Copy, CheckCircle2, UserCog } from 'lucide-react';
+import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight, Share2, Copy, CheckCircle2, UserCog, Brain } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 // --- 데이터: 6가지 유형별 키워드 (사용자 요청 반영) ---
@@ -604,10 +604,14 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
             <p className="text-sm md:text-base opacity-90">다른 사람이 공유한 커리어 진단 결과입니다</p>
           </div>
 
-          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-            <div className={`${topTypeInfo.barColor} text-white p-6 md:p-8 lg:p-10 text-center`}>
-              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">진단 결과 대시보드</h1>
-              <p className="opacity-90 font-medium text-sm md:text-base">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
+          <div className="bg-white rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100/50">
+            <div className={`
+              border-t-8 ${topTypeInfo.borderColor.replace('border-', 'border-t-')} 
+              bg-gradient-to-b from-gray-50 to-white
+              p-8 md:p-12 lg:p-16 text-center
+            `}>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 text-gray-900 tracking-tight">진단 결과 대시보드</h1>
+              <p className="text-gray-500 font-medium text-sm md:text-base tracking-wide">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
             </div>
 
             <div className="p-4 md:p-6 lg:p-8 xl:p-12">
@@ -635,10 +639,12 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
               {/* [대시보드 그리드] 핵심 키워드 & 직업 가치관 */}
               <div className="grid md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12">
                 {/* 1. 핵심 키워드 */}
-                <div className="bg-amber-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-amber-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-amber-800 mb-4 md:mb-6 flex items-center gap-2">
-                    <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
-                    MY CORE DNA (핵심 키워드)
+                <div className="bg-white rounded-3xl p-6 md:p-8 lg:p-10 border border-amber-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col h-full hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+                  <h3 className="font-extrabold text-lg md:text-xl lg:text-2xl text-amber-900 mb-6 md:mb-8 flex items-center gap-3 tracking-tight">
+                    <div className="bg-amber-100 p-2 rounded-xl">
+                      <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
+                    </div>
+                    MY CORE DNA
                   </h3>
                   <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
                     {topKeywords.map((key, idx) => {
@@ -646,12 +652,12 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
                       const typeName = RIASEC_DESCRIPTIONS[type].shortName;
                       const barColor = RIASEC_DESCRIPTIONS[type].barColor;
                       return (
-                        <div key={key} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-amber-100 flex items-center gap-3 md:gap-4">
-                          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm`}>
+                        <div key={key} className="bg-gray-50 p-4 md:p-5 rounded-2xl border border-gray-100 flex items-center gap-4 hover:bg-white hover:border-amber-200 hover:shadow-sm transition-all duration-300">
+                          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl ${barColor} text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-md`}>
                             {idx + 1}
                           </div>
-                          <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep flex-1">{key.split('-')[1]}</span>
-                          <span className="ml-auto text-xs text-gray-500 font-medium px-2 md:px-2.5 py-1 bg-gray-100 rounded-full shrink-0">
+                          <span className="font-extrabold text-lg md:text-xl lg:text-2xl text-gray-800 break-keep flex-1 tracking-tight">{key.split('-')[1]}</span>
+                          <span className="ml-auto text-xs md:text-sm text-gray-500 font-bold px-3 py-1.5 bg-white border border-gray-200 rounded-full shrink-0 shadow-sm">
                             {typeName}
                           </span>
                         </div>
@@ -661,47 +667,51 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
                 </div>
 
                 {/* 2. 직업 가치관 */}
-                <div className="bg-pink-50/50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-pink-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-pink-800 mb-4 md:mb-6 flex items-center gap-2">
-                    <Heart className="w-5 h-5 md:w-6 md:h-6 text-pink-600" />
-                    직업 가치관 (우선순위)
+                <div className="bg-white rounded-3xl p-6 md:p-8 lg:p-10 border border-pink-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col h-full hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+                  <h3 className="font-extrabold text-lg md:text-xl lg:text-2xl text-pink-900 mb-6 md:mb-8 flex items-center gap-3 tracking-tight">
+                    <div className="bg-pink-100 p-2 rounded-xl">
+                      <Heart className="w-5 h-5 md:w-6 md:h-6 text-pink-600" />
+                    </div>
+                    직업 가치관
                   </h3>
                   <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
                     {selectedValues.map((valId, idx) => (
-                      <div key={valId} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-pink-100 flex items-center gap-3 md:gap-4">
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-400 text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm">
+                      <div key={valId} className="bg-gray-50 p-4 md:p-5 rounded-2xl border border-gray-100 flex items-center gap-4 hover:bg-white hover:border-pink-200 hover:shadow-sm transition-all duration-300">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-pink-500 text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-md">
                           {idx + 1}
                         </div>
-                        <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep">{valId}</span>
+                        <span className="font-extrabold text-lg md:text-xl lg:text-2xl text-gray-800 break-keep tracking-tight">{valId}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* [하단] 전체 통계 차트 */}
-              <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-12 pt-6 md:pt-10 border-t border-gray-100">
+              {/* [하단] 전체 통계 차트 (R-I-A-S-E-C 순서 고정) */}
+              <div className="grid md:grid-cols-3 gap-8 md:gap-12 lg:gap-16 pt-10 md:pt-16 border-t border-gray-100/80">
                 <div className="md:col-span-2">
-                  <h3 className="font-bold text-base md:text-lg lg:text-xl text-gray-800 mb-4 md:mb-6 flex items-center gap-2">
-                    <BarChart2 className="w-5 h-5 md:w-6 md:h-6" /> 유형별 분포도 (RIASEC)
+                  <h3 className="font-extrabold text-xl md:text-2xl lg:text-3xl text-gray-900 mb-6 md:mb-10 flex items-center gap-3 tracking-tight">
+                    <BarChart2 className="w-6 h-6 md:w-8 md:h-8 text-gray-400" /> RIASEC 지수
                   </h3>
-                  <div className="space-y-3 md:space-y-4">
+                  <div className="space-y-4 md:space-y-6">
                     {fixedOrderTypes.map(([type, score]) => {
                       const desc = RIASEC_DESCRIPTIONS[type];
                       const isTop = type === topTypeKey;
                       return (
-                        <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
-                          <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
-                            <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
-                            <span className="break-keep">{desc.shortName} ({type})</span>
+                        <div key={type} className="flex items-center gap-4 md:gap-6 text-sm md:text-base group">
+                          <div className="w-24 md:w-32 lg:w-40 font-extrabold text-gray-800 flex items-center gap-2 md:gap-3 shrink-0">
+                            <span className={`w-3 h-3 md:w-4 md:h-4 rounded-md ${desc.barColor} shadow-sm`}></span>
+                            <span className="break-keep tracking-wide">{desc.shortName}</span>
                           </div>
-                          <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="flex-1 h-5 md:h-6 bg-gray-100 rounded-lg overflow-hidden relative">
                             <div
-                              className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
+                              className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-1000 ease-out ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-70'} group-hover:opacity-100`}
                               style={{ width: `${(score / 30) * 100}%` }}
-                            ></div>
+                            >
+                              <div className="absolute inset-0 bg-white/20 w-full h-full"></div>
+                            </div>
                           </div>
-                          <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
+                          <div className="w-8 md:w-10 text-right font-black text-gray-900 text-lg md:text-xl lg:text-2xl shrink-0 tabular-nums">{score}</div>
                         </div>
                       );
                     })}
@@ -709,16 +719,19 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
                 </div>
 
                 {/* 2,3순위 요약 */}
-                <div className="bg-gray-50 rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-gray-200">
-                  <div className="flex items-center gap-2 mb-3 md:mb-4 text-gray-500 font-bold text-xs md:text-sm uppercase tracking-wider">
-                    <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> Next Steps
+                <div className="bg-gray-900 rounded-3xl p-6 md:p-8 lg:p-10 border border-gray-800 text-white shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-gray-800 rounded-full opacity-50 blur-3xl"></div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-4 md:mb-6 text-gray-400 font-bold text-xs md:text-sm uppercase tracking-widest">
+                      <TrendingUp className="w-4 h-4 md:w-5 md:h-5" /> Next Steps
+                    </div>
+                    <h4 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white mb-4 md:mb-6 tracking-tight">보완 및 확장 전략</h4>
+                    <p className="text-gray-300 leading-loose text-sm md:text-base lg:text-lg break-keep font-medium">
+                      당신의 주무기는 <strong className="text-white bg-gray-800 px-2 py-1 rounded-md">{topTypeInfo.shortName}</strong>입니다.<br /><br />
+                      여기에 2순위인 <strong className={`text-white ${RIASEC_DESCRIPTIONS[secondType[0]].barColor} px-2 py-1 rounded-md`}>{RIASEC_DESCRIPTIONS[secondType[0]].shortName}</strong>의 특성을 결합하면 더 큰 시너지를 낼 수 있습니다.<br /><br />
+                      부족한 부분은 <span className="text-white border-b border-gray-600 pb-0.5">{RIASEC_DESCRIPTIONS[thirdType[0]].shortName}</span> 성향이 강한 동료와 협업하여 보완하세요.
+                    </p>
                   </div>
-                  <h4 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">보완 및 확장 전략</h4>
-                  <p className="text-gray-600 leading-relaxed text-xs md:text-sm break-keep">
-                    당신의 주무기는 <strong>{topTypeInfo.shortName}</strong>입니다.<br /><br />
-                    여기에 2순위인 <strong className={RIASEC_DESCRIPTIONS[secondType[0]].color.split(' ')[1]}>{RIASEC_DESCRIPTIONS[secondType[0]].shortName}</strong>의 특성을 결합하면 더 큰 시너지를 낼 수 있습니다.<br /><br />
-                    부족한 부분은 {RIASEC_DESCRIPTIONS[thirdType[0]].shortName} 성향이 강한 동료와 협업하여 보완하세요.
-                  </p>
                 </div>
               </div>
             </div>
@@ -891,7 +904,7 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
 
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border border-gray-100">
             {/* 상단 헤더: 1순위 유형 컬러에 맞춤 */}
-            <div className={`${topTypeInfo.barColor} text - white p - 6 md: p - 8 lg: p - 10 text - center`}>
+            <div className={`${topTypeInfo.barColor} text-white p-6 md:p-8 lg:p-10 text-center`}>
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">진단 결과 대시보드</h1>
               <p className="opacity-90 font-medium text-sm md:text-base">나의 흥미(RIASEC)와 직업 가치관 분석 결과</p>
             </div>
@@ -901,7 +914,7 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
               {/* [메인 섹션] 나의 흥미 유형 */}
               <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-center mb-8 md:mb-12 border-b border-gray-100 pb-8 md:pb-12">
                 <div className="text-center md:text-left flex-1">
-                  <div className={`inline - block px - 3 md: px - 4 py - 1 md: py - 1.5 ${topTypeInfo.color} font - bold rounded - full mb - 3 md: mb - 5 text - xs md: text - sm uppercase tracking - wide`}>
+                  <div className={`inline-block px-3 md:px-4 py-1 md:py-1.5 ${topTypeInfo.color} font-bold rounded-full mb-3 md:mb-5 text-xs md:text-sm uppercase tracking-wide`}>
                     나의 최고 강점 유형
                   </div>
                   <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-gray-900 mb-3 md:mb-5">
@@ -912,9 +925,9 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
                   </p>
                 </div>
                 <div className={`
-      w - 40 h - 40 md: w - 48 md: h - 48 lg: w - 56 lg: h - 56 rounded - full flex items - center justify - center text - 5xl md: text - 6xl lg: text - 7xl xl: text - 8xl shadow - xl border - 4 md: border - 8 transform hover: scale - 105 transition - transform duration - 300 shrink - 0
+                  w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full flex items-center justify-center text-5xl md:text-6xl lg:text-7xl xl:text-8xl shadow-xl border-4 md:border-8 transform hover:scale-105 transition-transform duration-300 shrink-0
                   ${topTypeInfo.color} ${topTypeInfo.borderColor}
-      `}>
+                `}>
                   {topTypeInfo.icon}
                 </div>
               </div>
@@ -935,7 +948,7 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
                       const barColor = RIASEC_DESCRIPTIONS[type].barColor;
                       return (
                         <div key={key} className="bg-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-sm border border-amber-100 flex items-center gap-3 md:gap-4">
-                          <div className={`w - 8 h - 8 md: w - 10 md: h - 10 rounded - full ${barColor} text - white flex items - center justify - center font - bold text - base md: text - lg shrink - 0 shadow - sm`}>
+                          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full ${barColor} text-white flex items-center justify-center font-bold text-base md:text-lg shrink-0 shadow-sm`}>
                             {idx + 1}
                           </div>
                           <span className="font-bold text-base md:text-lg lg:text-xl text-gray-800 break-keep flex-1">{key.split('-')[1]}</span>
@@ -980,13 +993,13 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
                       return (
                         <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
                           <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
-                            <span className={`w - 2 h - 2 md: w - 3 md: h - 3 rounded - full ${desc.barColor} `}></span>
+                            <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
                             <span className="break-keep">{desc.shortName} ({type})</span>
                           </div>
                           <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
                             <div
-                              className={`h - full rounded - full transition - all duration - 1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group - hover: opacity - 100`}
-                              style={{ width: `${(score / 30) * 100}% ` }}
+                              className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
+                              style={{ width: `${(score / 30) * 100}%` }}
                             ></div>
                           </div>
                           <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
@@ -1012,30 +1025,84 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
 
               {/* [신규 섹션] 버크만 진단 결과 (있을 경우만) */}
               {birkmanContext && (
-                <div className="mb-8 md:mb-12 border-t border-gray-100 pt-8 md:pt-12">
-                  <h3 className="font-bold text-lg md:text-xl lg:text-2xl text-purple-900 mb-6 flex items-center gap-2 border-l-4 border-purple-500 pl-4">
-                    <UserCog className="w-5 h-5 md:w-6 md:h-6 text-purple-600" /> 일하는 스타일 및 환경 (Birkman)
+                <div className="mb-12 md:mb-16 border-t border-gray-100/80 pt-12 md:pt-16">
+                  <h3 className="font-extrabold text-xl md:text-2xl lg:text-3xl text-purple-900 mb-8 flex items-center gap-3 tracking-tight">
+                    <div className="bg-purple-100 p-2 rounded-xl">
+                      <UserCog className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
+                    </div>
+                    일하는 스타일 및 환경 (Birkman)
                   </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                     {/* 흥미 */}
-                    <div className={`bg - white rounded - 2xl p - 4 md: p - 6 shadow - sm border - t - 4 border - ${bInterest} -500 text - center`}>
-                      <div className="text-xs md:text-sm text-gray-500 font-bold mb-2">흥미 (Interests)</div>
-                      <div className={`text - xl md: text - 2xl font - extrabold text - ${bInterest} -600`}>{bInterestName}</div>
+                    <div className={`bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-${bInterest}-500 text-center flex flex-col justify-center`}>
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">흥미 (Interests)</div>
+                      <div className={`text-2xl md:text-3xl font-black text-${bInterest}-600 tracking-tight`}>{bInterestName}</div>
                     </div>
                     {/* 평소행동 */}
-                    <div className={`bg - white rounded - 2xl p - 4 md: p - 6 shadow - sm border - t - 4 border - ${bBehavior} -500 text - center`}>
-                      <div className="text-xs md:text-sm text-gray-500 font-bold mb-2">평소행동 (Usual)</div>
-                      <div className={`text - xl md: text - 2xl font - extrabold text - ${bBehavior} -600`}>{bBehaviorName}</div>
+                    <div className={`bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-${bBehavior}-500 text-center flex flex-col justify-center`}>
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">평소행동 (Usual)</div>
+                      <div className={`text-2xl md:text-3xl font-black text-${bBehavior}-600 tracking-tight`}>{bBehaviorName}</div>
                     </div>
                     {/* 욕구 */}
-                    <div className={`bg - white rounded - 2xl p - 4 md: p - 6 shadow - sm border - t - 4 border - ${bNeeds} -500 text - center`}>
-                      <div className="text-xs md:text-sm text-gray-500 font-bold mb-2">욕구 (Needs)</div>
-                      <div className={`text - xl md: text - 2xl font - extrabold text - ${bNeeds} -600`}>{bNeedsName}</div>
+                    <div className={`bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-${bNeeds}-500 text-center flex flex-col justify-center`}>
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">욕구 (Needs)</div>
+                      <div className={`text-2xl md:text-3xl font-black text-${bNeeds}-600 tracking-tight`}>{bNeedsName}</div>
                     </div>
                     {/* 스트레스 */}
-                    <div className={`bg - white rounded - 2xl p - 4 md: p - 6 shadow - sm border - t - 4 border - ${bStress} -500 text - center`}>
-                      <div className="text-xs md:text-sm text-gray-500 font-bold mb-2">스트레스 (Stress)</div>
-                      <div className={`text - xl md: text - 2xl font - extrabold text - ${bStress} -600`}>{bStressName}</div>
+                    <div className={`bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-${bStress}-500 text-center flex flex-col justify-center`}>
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">스트레스 (Stress)</div>
+                      <div className={`text-2xl md:text-3xl font-black text-${bStress}-600 tracking-tight`}>{bStressName}</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* [신규 섹션] TCI 진단 결과 (있을 경우만) */}
+              {tciContext && (
+                <div className="mb-12 md:mb-16 border-t border-gray-100/80 pt-12 md:pt-16">
+                  <h3 className="font-extrabold text-xl md:text-2xl lg:text-3xl text-indigo-900 mb-8 flex items-center gap-3 tracking-tight">
+                    <div className="bg-indigo-100 p-2 rounded-xl">
+                      <Brain className="w-6 h-6 md:w-8 md:h-8 text-indigo-600" />
+                    </div>
+                    기질 및 성격 (TCI)
+                  </h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-6 lg:mb-8">
+                    {/* 자극추구 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-blue-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">자극추구 (NS)</div>
+                      <div className="text-2xl md:text-3xl font-black text-blue-600 tracking-tight">{tciContext.NS}%</div>
+                    </div>
+                    {/* 위험회피 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-rose-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">위험회피 (HA)</div>
+                      <div className="text-2xl md:text-3xl font-black text-rose-600 tracking-tight">{tciContext.HA}%</div>
+                    </div>
+                    {/* 사회적 민감성 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-amber-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">사회성 (RD)</div>
+                      <div className="text-2xl md:text-3xl font-black text-amber-600 tracking-tight">{tciContext.RD}%</div>
+                    </div>
+                    {/* 인내력 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-emerald-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">인내력 (PS)</div>
+                      <div className="text-2xl md:text-3xl font-black text-emerald-600 tracking-tight">{tciContext.PS}%</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+                    {/* 자율성 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-purple-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">자율성 (SD)</div>
+                      <div className="text-2xl md:text-3xl font-black text-purple-600 tracking-tight">{tciContext.SD}%</div>
+                    </div>
+                    {/* 연대감 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-pink-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">연대감 (CO)</div>
+                      <div className="text-2xl md:text-3xl font-black text-pink-600 tracking-tight">{tciContext.CO}%</div>
+                    </div>
+                    {/* 자기초월 */}
+                    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50 border-t-8 border-t-indigo-500 text-center flex flex-col justify-center">
+                      <div className="text-xs md:text-sm text-gray-400 font-bold mb-3 uppercase tracking-widest">자기초월 (ST)</div>
+                      <div className="text-2xl md:text-3xl font-black text-indigo-600 tracking-tight">{tciContext.ST}%</div>
                     </div>
                   </div>
                 </div>
@@ -1207,7 +1274,7 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
             </button>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 
