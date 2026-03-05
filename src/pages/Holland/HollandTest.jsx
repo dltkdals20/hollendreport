@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight, Share2, Copy, CheckCircle2, UserCog, Brain } from 'lucide-react';
+import { CheckCircle, BarChart2, RefreshCw, ChevronRight, Heart, Check, TrendingUp, MousePointerClick, Trophy, Star, ArrowRight, Share2, Copy, CheckCircle2, UserCog, Brain, ArrowLeft } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 // --- 데이터: 6가지 유형별 키워드 (사용자 요청 반영) ---
@@ -313,8 +313,18 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-4 font-sans">
         <div className="max-w-2xl w-full bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-          <div className="bg-gray-900 p-6 md:p-10 lg:p-12 text-center text-white">
-            <MousePointerClick className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 opacity-90" />
+          <div className="bg-gray-900 p-6 md:p-10 lg:p-12 text-center text-white relative">
+            {/* 상단 뒤로가기 버튼 */}
+            <div className="absolute top-4 left-4 md:top-6 md:left-6">
+              <button
+                onClick={() => window.location.href = '/'}
+                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-bold px-2 py-1 rounded-lg hover:bg-gray-800"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span className="hidden sm:inline">메인으로</span>
+              </button>
+            </div>
+            <MousePointerClick className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 opacity-90 mt-4 md:mt-0" />
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 md:mb-4">커리어 키워드 진단</h1>
             <p className="text-gray-300 text-sm md:text-base lg:text-lg px-2">나를 설명하는 키워드를 선택하여<br className="hidden sm:block" />숨겨진 직업 흥미와 가치관을 찾아보세요.</p>
           </div>
@@ -384,7 +394,18 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       <div className={`min-h-screen py-4 md:py-8 px-3 md:px-4 font-sans transition-colors duration-500 ${typeInfo.color}`}>
         <div className="max-w-4xl mx-auto">
           {/* Header & Progress */}
-          <div className="mb-4 md:mb-8 bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-white/50">
+          <div className="mb-4 md:mb-8 bg-white/80 backdrop-blur-sm p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-sm border border-white/50">
+            {/* 뒤로가기 버튼 */}
+            <div className="mb-4 md:mb-6">
+              <button
+                onClick={() => setStep('intro')}
+                className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition-colors font-bold text-sm md:text-base"
+              >
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <span>인트로 화면으로</span>
+              </button>
+            </div>
+
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3 md:mb-4">
               <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
                 <span className="text-2xl md:text-3xl lg:text-4xl shrink-0">{typeInfo.icon}</span>
@@ -433,10 +454,25 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
               })}
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-3 md:gap-4">
+              <button
+                onClick={() => {
+                  if (currentPageIndex > 0) {
+                    setCurrentPageIndex(prev => prev - 1);
+                    window.scrollTo(0, 0);
+                  } else {
+                    setStep('intro');
+                  }
+                }}
+                className="bg-white border-2 border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50 text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-6 md:px-8 rounded-full shadow-sm transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="whitespace-nowrap">{currentPageIndex > 0 ? '이전 유형으로' : '인트로 화면으로'}</span>
+              </button>
+
               <button
                 onClick={nextKeywordPage}
-                className="bg-gray-900 hover:bg-black text-white text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-8 md:px-12 lg:px-16 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 flex items-center gap-2"
+                className="bg-gray-900 hover:bg-black text-white text-sm md:text-base lg:text-lg font-bold py-3 md:py-4 px-8 md:px-12 lg:px-16 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
                 <span className="whitespace-nowrap">{currentPageIndex < 5 ? '다음 유형으로' : '키워드 선택 완료'}</span>
                 <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -454,7 +490,18 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       <div className="min-h-screen bg-amber-50 py-4 md:py-8 px-3 md:px-4 font-sans flex items-center">
         <div className="max-w-4xl mx-auto w-full">
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-8 xl:p-10 border-2 border-amber-100">
-            <div className="text-center mb-6 md:mb-8">
+            {/* 뒤로가기 버튼 */}
+            <div className="mb-4 md:mb-6">
+              <button
+                onClick={() => setStep('keywordTest')}
+                className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition-colors font-bold text-sm md:text-base"
+              >
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <span>이전 목록으로</span>
+              </button>
+            </div>
+
+            <div className="text-center mb-6 md:mb-8 mt-6 sm:mt-0">
               <div className="inline-block p-2 md:p-3 bg-amber-100 rounded-full mb-3 md:mb-4">
                 <Trophy className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
               </div>
@@ -520,7 +567,18 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       <div className="min-h-screen bg-gray-50 py-4 md:py-8 px-3 md:px-4 font-sans flex items-center">
         <div className="max-w-3xl mx-auto w-full">
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 lg:p-8 xl:p-10 border border-gray-100">
-            <div className="text-center mb-6 md:mb-8">
+            {/* 뒤로가기 버튼 */}
+            <div className="mb-4 md:mb-6">
+              <button
+                onClick={() => setStep('topKeywordSelect')}
+                className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition-colors font-bold text-sm md:text-base"
+              >
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <span>이전 기호 선택으로</span>
+              </button>
+            </div>
+
+            <div className="text-center mb-6 md:mb-8 mt-6 sm:mt-0">
               <div className="inline-block p-2 md:p-3 bg-pink-100 rounded-full mb-3 md:mb-4">
                 <Heart className="w-6 h-6 md:w-8 md:h-8 text-pink-600" />
               </div>

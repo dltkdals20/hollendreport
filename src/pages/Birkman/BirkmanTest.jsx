@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Activity, UserCog } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Activity, UserCog, ArrowLeft } from 'lucide-react';
 import HollandTest from '../Holland/HollandTest'; // Reusing the Holland test component
 
 // Birkman Colors Data
@@ -77,7 +77,18 @@ export default function BirkmanTest() {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans">
                 <div className="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100/50">
-                    <div className="bg-purple-600 p-10 md:p-14 text-center text-white">
+                    {/* 상단 뒤로가기 버튼 */}
+                    <div className="flex justify-start px-8 pt-8 pb-0 bg-purple-600 rounded-t-[2.5rem]">
+                        <button
+                            onClick={() => setBirkmanStep('intro')}
+                            className="flex items-center gap-2 text-purple-200 hover:text-white transition-colors font-bold px-2 py-1 rounded-lg hover:bg-purple-700/50"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                            <span>인트로 화면으로</span>
+                        </button>
+                    </div>
+
+                    <div className="bg-purple-600 px-10 pb-10 pt-4 md:px-14 md:pb-14 md:pt-6 text-center text-white">
                         <span className="text-5xl mb-6 block">📋</span>
                         <h1 className="text-3xl md:text-4xl font-black mb-3 tracking-tight">기본 배경 정보</h1>
                         <p className="text-purple-200 text-base md:text-lg font-medium leading-relaxed">
