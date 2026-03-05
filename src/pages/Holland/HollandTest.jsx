@@ -789,13 +789,22 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       topKeywordLabels = topKeywords.map(k => k.split('-')[1]).join(', ');
       valLabels = selectedValues.join(', ');
 
+      // 배경 정보 (전공/이전 직무) — 선택 사항, 입력된 것만 포함
+      const major = ((tciContext?.major || birkmanContext?.major) || '').trim();
+      const pastJob = ((tciContext?.pastJob || birkmanContext?.pastJob) || '').trim();
+      const backgroundLines = [
+        major ? `전공: ${major}` : null,
+        pastJob ? `이전 직장 직무: ${pastJob}` : null,
+      ].filter(Boolean);
+      const backgroundBlock = backgroundLines.length > 0
+        ? `[배경 정보]\n${backgroundLines.join('\n')}\n\n`
+        : '';
+
       let testNames = ["'홀랜드(Holland) 직업 흥미 검사'"];
       if (birkmanContext) testNames.push("'버크만(Birkman) 진단(컬러 기반)'");
       if (tciContext) testNames.push("'TCI(기질 및 성격 검사)'");
 
-      const aiIntro = `당신은 최고의 커리어 및 심리 분석 전문가입니다. 저는 최근 ${testNames.join(', ')}을 진행했습니다. 이 데이터를 기반으로 저명한 심리학적 근거를 바탕으로 분석해주세요.
-
-`;
+      const aiIntro = `당신은 최고의 커리어 및 심리 분석 전문가입니다. 저는 최근 ${testNames.join(', ')}을 진행했습니다. 이 데이터를 기반으로 저명한 심리학적 근거를 바탕으로 분석해주세요.\n\n${backgroundBlock}`;
 
       const tciText = tciContext
         ? `TCI 진단 결과 기질 백분위는 [자극추구 ${tciContext.NS}%, 위험회피 ${tciContext.HA}%, 사회적 민감성 ${tciContext.RD}%, 인내력 ${tciContext.PS}%]이고, 성격 백분위는 [자율성 ${tciContext.SD}%, 연대감 ${tciContext.CO}%, 자기초월 ${tciContext.ST}%]입니다.`

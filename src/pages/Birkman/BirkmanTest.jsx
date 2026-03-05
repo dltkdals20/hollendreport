@@ -11,7 +11,7 @@ const BIRKMAN_COLORS = [
 ];
 
 export default function BirkmanTest() {
-    const [birkmanStep, setBirkmanStep] = useState('intro'); // intro -> interest -> behavior -> needs -> stress -> holland
+    const [birkmanStep, setBirkmanStep] = useState('intro'); // intro -> background -> interest -> behavior -> needs -> stress -> holland
 
     // State to hold Birkman data
     const [birkmanData, setBirkmanData] = useState({
@@ -20,6 +20,11 @@ export default function BirkmanTest() {
         needsColor: null,
         stressColor: null,
     });
+    const [userInfo, setUserInfo] = useState({ major: '', pastJob: '' });
+
+    const handleUserInfoChange = (field, value) => {
+        setUserInfo(prev => ({ ...prev, [field]: value }));
+    };
 
     const handleColorSelect = (type, colorId) => {
         setBirkmanData(prev => ({ ...prev, [type]: colorId }));
@@ -37,7 +42,8 @@ export default function BirkmanTest() {
     };
 
     const handleBack = () => {
-        if (birkmanStep === 'interest') setBirkmanStep('intro');
+        if (birkmanStep === 'background') setBirkmanStep('intro');
+        else if (birkmanStep === 'interest') setBirkmanStep('background');
         else if (birkmanStep === 'behavior') setBirkmanStep('interest');
         else if (birkmanStep === 'needs') setBirkmanStep('behavior');
         else if (birkmanStep === 'stress') setBirkmanStep('needs');
@@ -56,11 +62,66 @@ export default function BirkmanTest() {
                         사전에 안내받으신 <strong className="text-purple-600 bg-purple-50 px-2 py-0.5 rounded">버크만 컬러 지표</strong>를 선택한 후,<br />심층 커리어 진단을 이어갑니다.
                     </p>
                     <button
-                        onClick={() => setBirkmanStep('interest')}
+                        onClick={() => setBirkmanStep('background')}
                         className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-12 rounded-full shadow-[0_8px_30px_rgba(147,51,234,0.3)] hover:shadow-[0_8px_30px_rgba(147,51,234,0.5)] transition-all hover:-translate-y-1 text-lg flex items-center gap-3 mx-auto"
                     >
                         진단 시작하기 <ChevronRight className="w-6 h-6" />
                     </button>
+                </div>
+            </div>
+        );
+    }
+
+    // --- Step 0-1: Background Info ---
+    if (birkmanStep === 'background') {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans">
+                <div className="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100/50">
+                    <div className="bg-purple-600 p-10 md:p-14 text-center text-white">
+                        <span className="text-5xl mb-6 block">📋</span>
+                        <h1 className="text-3xl md:text-4xl font-black mb-3 tracking-tight">기본 배경 정보</h1>
+                        <p className="text-purple-200 text-base md:text-lg font-medium leading-relaxed">
+                            <span className="text-white font-bold">모두 선택 사항</span>이니 해당 없으면 비워두고 다음으로 넘어가주세요.
+                        </p>
+                    </div>
+                    <div className="p-8 md:p-12 space-y-5">
+                        <div className="p-5 rounded-3xl border border-gray-100 bg-gray-50/50">
+                            <label className="font-extrabold text-base text-purple-600 mb-1 block">전공 <span className="text-gray-400 font-medium text-sm">(선택 기입 사항)</span></label>
+                            <p className="text-sm text-gray-500 mb-3">대학교 전공 계열 또는 학과</p>
+                            <input
+                                type="text"
+                                value={userInfo.major}
+                                onChange={(e) => handleUserInfoChange('major', e.target.value)}
+                                placeholder="예) 경영학, 심리학 (선택)"
+                                className="w-full py-3 px-4 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-100 transition-all bg-white text-gray-800 font-medium"
+                            />
+                        </div>
+                        <div className="p-5 rounded-3xl border border-gray-100 bg-gray-50/50">
+                            <label className="font-extrabold text-base text-purple-600 mb-1 block">이전 직장 직무 <span className="text-gray-400 font-medium text-sm">(선택 기입 사항)</span></label>
+                            <p className="text-sm text-gray-500 mb-3">이전에 경험한 직무나 업종</p>
+                            <input
+                                type="text"
+                                value={userInfo.pastJob}
+                                onChange={(e) => handleUserInfoChange('pastJob', e.target.value)}
+                                placeholder="예) 영업, 인사관리 (없으면 비워두세요)"
+                                className="w-full py-3 px-4 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-100 transition-all bg-white text-gray-800 font-medium"
+                            />
+                        </div>
+                        <div className="flex gap-4 pt-2">
+                            <button
+                                onClick={handleBack}
+                                className="flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900 font-bold px-6 py-4 rounded-full transition-all bg-white border-2 border-gray-200 hover:border-gray-400 shadow-sm"
+                            >
+                                <ChevronLeft className="w-5 h-5" /> 이전
+                            </button>
+                            <button
+                                onClick={() => setBirkmanStep('interest')}
+                                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            >
+                                다음 단계로 <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -246,7 +307,7 @@ export default function BirkmanTest() {
     if (birkmanStep === 'holland') {
         // We pass the collected birkman data as props to the HollandTest component
         // The Holland component will need to be modified to accept "initialContext"
-        return <HollandTest birkmanContext={birkmanData} />;
+        return <HollandTest birkmanContext={{ ...birkmanData, major: userInfo.major, pastJob: userInfo.pastJob }} />;
     }
 
     return null;

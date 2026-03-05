@@ -23,6 +23,11 @@ export default function TCITest() {
         CO: '',
         ST: ''
     });
+    const [userInfo, setUserInfo] = useState({ major: '', pastJob: '' });
+
+    const handleUserInfoChange = (field, value) => {
+        setUserInfo(prev => ({ ...prev, [field]: value }));
+    };
 
     const handleScoreChange = (id, value) => {
         // Only allow numbers between 0 and 100
@@ -48,6 +53,7 @@ export default function TCITest() {
     const restart = () => {
         setStep('intro');
         setScores({ NS: '', HA: '', RD: '', PS: '', SD: '', CO: '', ST: '' });
+        setUserInfo({ major: '', pastJob: '' });
     };
 
     // 1. 인트로 페이지
@@ -94,6 +100,45 @@ export default function TCITest() {
                     <div className="text-center mb-10 md:mb-16">
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4 tracking-tight">TCI 지표 입력</h2>
                         <p className="text-gray-500 text-base md:text-lg font-medium">결과지에 표기된 <strong className="text-indigo-600">백분위(Percentile) 점수</strong>를 정확히 입력해주세요.</p>
+                    </div>
+
+                    {/* 배경 정보 섹션 */}
+                    <div className="bg-white rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100/50">
+                        <div className="p-8 md:p-12 lg:p-16">
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="bg-indigo-50 p-3 rounded-2xl">
+                                    <span className="text-2xl">📋</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-black text-gray-900 tracking-tight">기본 배경 정보</h3>
+                                    <p className="text-sm md:text-base text-gray-500 mt-1 font-medium">모두 선택 사항이니 해당 없으면 비워두고 다음으로 넘어가주세요.</p>
+                                </div>
+                            </div>
+                            <div className="grid sm:grid-cols-2 gap-5 md:gap-6">
+                                <div className="p-5 md:p-6 rounded-3xl border border-gray-100 bg-gray-50/50">
+                                    <label className="font-extrabold text-base text-indigo-600 mb-2 block">전공 <span className="text-gray-400 font-medium text-sm">(선택 기입 사항)</span></label>
+                                    <p className="text-sm text-gray-500 mb-4">대학교 전공 계열 또는 학과</p>
+                                    <input
+                                        type="text"
+                                        value={userInfo.major}
+                                        onChange={(e) => handleUserInfoChange('major', e.target.value)}
+                                        placeholder="예) 경영학, 심리학 (선택)"
+                                        className="w-full py-3 px-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-indigo-100 transition-all bg-white text-gray-800 font-medium"
+                                    />
+                                </div>
+                                <div className="p-5 md:p-6 rounded-3xl border border-gray-100 bg-gray-50/50">
+                                    <label className="font-extrabold text-base text-indigo-600 mb-2 block">이전 직장 직무 <span className="text-gray-400 font-medium text-sm">(선택 기입 사항)</span></label>
+                                    <p className="text-sm text-gray-500 mb-4">이전에 경험한 직무나 업종</p>
+                                    <input
+                                        type="text"
+                                        value={userInfo.pastJob}
+                                        onChange={(e) => handleUserInfoChange('pastJob', e.target.value)}
+                                        placeholder="예) 영업, 인사관리 (없으면 비워두세요)"
+                                        className="w-full py-3 px-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-indigo-100 transition-all bg-white text-gray-800 font-medium"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="bg-white rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100/50">
@@ -202,7 +247,7 @@ export default function TCITest() {
 
     // 3. 결과 페이지로 이동 (홀랜드 테스트에 tciContext 전달)
     if (step === 'holland') {
-        return <HollandTest tciContext={scores} />;
+        return <HollandTest tciContext={{ ...scores, major: userInfo.major, pastJob: userInfo.pastJob }} />;
     }
 
     return null;
