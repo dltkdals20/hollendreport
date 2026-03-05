@@ -694,27 +694,31 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
                     <BarChart2 className="w-6 h-6 md:w-8 md:h-8 text-gray-400" /> RIASEC 지수
                   </h3>
                   <div className="space-y-4 md:space-y-6">
-                    {fixedOrderTypes.map(([type, score]) => {
-                      const desc = RIASEC_DESCRIPTIONS[type];
-                      const isTop = type === topTypeKey;
-                      return (
-                        <div key={type} className="flex items-center gap-4 md:gap-6 text-sm md:text-base group">
-                          <div className="w-24 md:w-32 lg:w-40 font-extrabold text-gray-800 flex items-center gap-2 md:gap-3 shrink-0">
-                            <span className={`w-3 h-3 md:w-4 md:h-4 rounded-md ${desc.barColor} shadow-sm`}></span>
-                            <span className="break-keep tracking-wide">{desc.shortName}</span>
-                          </div>
-                          <div className="flex-1 h-5 md:h-6 bg-gray-100 rounded-lg overflow-hidden relative">
-                            <div
-                              className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-1000 ease-out ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-70'} group-hover:opacity-100`}
-                              style={{ width: `${(score / 30) * 100}%` }}
-                            >
-                              <div className="absolute inset-0 bg-white/20 w-full h-full"></div>
+                    {(() => {
+                      const maxScore = Math.max(...fixedOrderTypes.map(([, s]) => s), 1);
+                      return fixedOrderTypes.map(([type, score]) => {
+                        const desc = RIASEC_DESCRIPTIONS[type];
+                        const isTop = type === topTypeKey;
+                        const barWidth = Math.max((score / maxScore) * 100, score > 0 ? 5 : 0);
+                        return (
+                          <div key={type} className="flex items-center gap-4 md:gap-6 text-sm md:text-base group">
+                            <div className="w-24 md:w-32 lg:w-40 font-extrabold text-gray-800 flex items-center gap-2 md:gap-3 shrink-0">
+                              <span className={`w-3 h-3 md:w-4 md:h-4 rounded-md ${desc.barColor} shadow-sm`}></span>
+                              <span className="break-keep tracking-wide">{desc.shortName}</span>
                             </div>
+                            <div className="flex-1 h-5 md:h-6 bg-gray-100 rounded-lg overflow-hidden relative">
+                              <div
+                                className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-1000 ease-out ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-70'} group-hover:opacity-100`}
+                                style={{ width: `${barWidth}%` }}
+                              >
+                                <div className="absolute inset-0 bg-white/20 w-full h-full"></div>
+                              </div>
+                            </div>
+                            <div className="w-8 md:w-10 text-right font-black text-gray-900 text-lg md:text-xl lg:text-2xl shrink-0 tabular-nums">{score}</div>
                           </div>
-                          <div className="w-8 md:w-10 text-right font-black text-gray-900 text-lg md:text-xl lg:text-2xl shrink-0 tabular-nums">{score}</div>
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
 
@@ -987,25 +991,29 @@ ${tciText}${teammateConditionText}, 기대하는 환경 즉 가치관은 비슷�
                     <BarChart2 className="w-5 h-5 md:w-6 md:h-6" /> 유형별 분포도 (RIASEC)
                   </h3>
                   <div className="space-y-3 md:space-y-4">
-                    {fixedOrderTypes.map(([type, score]) => {
-                      const desc = RIASEC_DESCRIPTIONS[type];
-                      const isTop = type === topTypeKey;
-                      return (
-                        <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
-                          <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
-                            <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
-                            <span className="break-keep">{desc.shortName} ({type})</span>
+                    {(() => {
+                      const maxScore = Math.max(...fixedOrderTypes.map(([, s]) => s), 1);
+                      return fixedOrderTypes.map(([type, score]) => {
+                        const desc = RIASEC_DESCRIPTIONS[type];
+                        const isTop = type === topTypeKey;
+                        const barWidth = Math.max((score / maxScore) * 100, score > 0 ? 5 : 0);
+                        return (
+                          <div key={type} className="flex items-center gap-2 md:gap-4 text-xs md:text-sm group">
+                            <div className="w-20 md:w-28 lg:w-36 font-bold text-gray-600 flex items-center gap-1 md:gap-2 shrink-0">
+                              <span className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${desc.barColor}`}></span>
+                              <span className="break-keep">{desc.shortName} ({type})</span>
+                            </div>
+                            <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
+                                style={{ width: `${barWidth}%` }}
+                              ></div>
+                            </div>
+                            <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
                           </div>
-                          <div className="flex-1 h-4 md:h-5 bg-gray-100 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-1000 ${desc.barColor} ${isTop ? 'opacity-100' : 'opacity-60'} group-hover:opacity-100`}
-                              style={{ width: `${(score / 30) * 100}%` }}
-                            ></div>
-                          </div>
-                          <div className="w-6 md:w-8 text-right font-bold text-gray-700 text-sm md:text-base lg:text-lg shrink-0">{score}</div>
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
 
