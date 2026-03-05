@@ -814,11 +814,37 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
         ? `버크만 진단 결과 직업적으로 흥미를 느끼는 스타일은 [${bInterestName}]이며, 일할 때의 평소 행동(Usual Behavior) 방식은 [${bBehaviorName}]입니다.`
         : '';
 
-      promptJob = aiIntro + `당신은 핵심 역량을 짚어내는 아주 유능한 직업 컨설턴트입니다.
+      const basePromptJobIntro = aiIntro + `당신은 핵심 역량을 짚어내는 아주 유능한 직업 컨설턴트입니다.
 저는 홀랜드 검사 결과, 최고 강점 유형 1순위와 2순위가 각각 **[${topTypeInfo.name}]**와(과) **[${RIASEC_DESCRIPTIONS[secondType[0]].name}]**이고 직무 핵심 키워드는 **[${topKeywordLabels}]**입니다.
 직업을 선택할 때 가장 중요하게 생각하는 가치관은 **[${valLabels}]**입니다.
 ${birkmanTextJob}${tciText}
-[분석 지시]
+[분석 지시]`;
+
+      if (backgroundLines.length > 0) {
+        promptJob = basePromptJobIntro + `
+사용자의 성향 정보(버크만/홀랜드 유형, 직업 가치관 등)와 [배경 정보]를 바탕으로, 다음 두 가지 파트로 나누어 직업을 추천해 주세요.
+
+Part 1. 현실 맞춤형 직업 추천 (10개)
+사용자의 [배경 정보](전공, 이전 직장 직무)와 성향/가치관을 모두 종합하여, 현재의 커리어 패스를 살리거나 현실적으로 전환하기 좋은 시너지 위주의 직업 10가지를 엄선하세요.
+
+Part 2. 순수 성향 기반 직업 추천 (10개)
+[배경 정보]는 완전히 배제하고, 오직 사용자의 본연의 성향과 직업 가치관에만 초점을 맞춰 자아실현에 완벽히 부합하는 이상적인 직업 10가지를 엄선하세요.
+
+[출력 규칙]
+최종 답변에는 당신이 분석한 이유나 부연 설명을 일절 적지 마세요. 오직 아래의 형식처럼 파트를 나누어 직업명만 깔끔한 리스트 형태로 출력하세요.
+
+(예시)
+[Part 1. 현실 맞춤형 추천]
+1. 데이터 분석가
+2. 금융 상품 기획자
+...
+
+[Part 2. 순수 성향 기반 추천]
+1. 비영리 단체 코디네이터
+2. 예술 치료사
+...`;
+      } else {
+        promptJob = basePromptJobIntro + `
 '어떤 데이터나 대상에 끌리는가(흥미)'와 '어떤 방식으로 성과를 내는가(평소 행동)'의 교집합, 홀랜드 주 강점, 직업 가치관을 모두 종합적으로 교차 분석하세요. 내부적으로 각 직업이 왜 이 사람에게 완벽하게 부합하는지 그 타당한 이유를 깊이 있게 추론하여 가장 적합한 직업 10가지를 엄선하세요.
 
 [출력 규칙]
@@ -828,6 +854,7 @@ ${birkmanTextJob}${tciText}
 1. 데이터 분석가
 2. UX 리서처
 ...`;
+      }
 
       const birkmanTextEnv = birkmanContext
         ? `버크만 진단 결과 이상적인 업무 환경이나 타인에게 기대하는 '욕구(Needs)' 스타일은[${bNeedsName}]입니다.`
