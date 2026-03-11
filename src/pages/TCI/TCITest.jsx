@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, Brain, Heart, ChevronRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Brain, Heart, ChevronRight, ArrowLeft } from 'lucide-react';
 import HollandTest from '../Holland/HollandTest';
 
 const TCI_SCALES = [
@@ -97,6 +97,17 @@ export default function TCITest() {
         return (
             <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans">
                 <div className="max-w-3xl mx-auto space-y-6">
+                    {/* 상단 뒤로가기 버튼 */}
+                    <div className="flex items-center mb-4">
+                        <button
+                            onClick={() => setStep('intro')}
+                            className="flex items-center gap-2 text-gray-500 hover:text-indigo-600 transition-colors font-bold px-2 py-1 rounded-lg hover:bg-indigo-50"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                            <span>이전 단계로</span>
+                        </button>
+                    </div>
+
                     <div className="text-center mb-10 md:mb-16">
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4 tracking-tight">TCI 지표 입력</h2>
                         <p className="text-gray-500 text-base md:text-lg font-medium">결과지에 표기된 <strong className="text-indigo-600">백분위(Percentile) 점수</strong>를 정확히 입력해주세요.</p>
