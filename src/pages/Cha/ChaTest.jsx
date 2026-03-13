@@ -106,6 +106,8 @@ export default function ChaTest() {
   const [selectedValues, setSelectedValues] = useState([]); // 직업 가치관 TOP 3
   const [currentPageIndex, setCurrentPageIndex] = useState(0); // 0~5
   const [isCopied, setIsCopied] = useState(null);
+  const [userMajor, setUserMajor] = useState('');
+  const [userPastJob, setUserPastJob] = useState('');
 
   // --- Handlers ---
   const handleInitialToggle = (keyword) => {
@@ -169,6 +171,8 @@ export default function ChaTest() {
     setTopKeywords([]);
     setSelectedValues([]);
     setCurrentPageIndex(0);
+    setUserMajor('');
+    setUserPastJob('');
   };
 
   const copyToClipboard = (text, id) => {
@@ -218,11 +222,62 @@ export default function ChaTest() {
               ))}
             </div>
             <button
-              onClick={() => setStep('keywords')}
+              onClick={() => setStep('backgroundInfo')}
               className="w-full bg-gray-900 hover:bg-black text-white font-black py-5 px-8 rounded-2xl transition-all duration-300 text-lg md:text-xl shadow-lg flex items-center justify-center gap-3 transform hover:-translate-y-1 active:scale-[0.98]"
             >
               시작하기 <ChevronRight className="w-6 h-6" />
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'backgroundInfo') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+        <div className="max-w-xl w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-center text-white">
+            <h1 className="text-xl md:text-2xl font-black mb-2">배경 정보 입력</h1>
+            <p className="text-gray-300 text-sm md:text-base">입력하면 AI 직업 추천 정확도가 높아져요.<br />없으면 건너뛰어도 됩니다.</p>
+          </div>
+          <div className="p-8 space-y-5">
+            <div>
+              <label className="font-black text-sm text-gray-700 mb-1 block">전공 <span className="text-gray-400 font-normal text-xs">(선택 사항)</span></label>
+              <p className="text-xs text-gray-400 mb-2">대학교 전공 계열 또는 학과</p>
+              <input
+                type="text"
+                value={userMajor}
+                onChange={(e) => setUserMajor(e.target.value)}
+                placeholder="예) 경영학, 컴퓨터공학, 심리학"
+                className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-100"
+              />
+            </div>
+            <div>
+              <label className="font-black text-sm text-gray-700 mb-1 block">이전 직장 직무 <span className="text-gray-400 font-normal text-xs">(선택 사항)</span></label>
+              <p className="text-xs text-gray-400 mb-2">현재 또는 이전 직장에서 맡았던 직무</p>
+              <input
+                type="text"
+                value={userPastJob}
+                onChange={(e) => setUserPastJob(e.target.value)}
+                placeholder="예) 마케팅, 영업, 개발, 디자인"
+                className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-100"
+              />
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setStep('intro')}
+                className="flex-1 border-2 border-gray-200 text-gray-600 font-black py-3 rounded-2xl hover:bg-gray-50 transition-all text-sm"
+              >
+                이전으로
+              </button>
+              <button
+                onClick={() => setStep('keywords')}
+                className="flex-[2] bg-gray-900 hover:bg-black text-white font-black py-3 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-sm"
+              >
+                다음 <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -520,9 +575,19 @@ export default function ChaTest() {
     const topKeywordLabels = topKeywords.map(k => k.split('-')[1]).join(', ');
     const valLabels = selectedValues.join(', ');
 
-    // --- 프롬프트 생성 (Ported exactly from HollandTest.jsx) ---
+    // --- 프롬프트 생성 ---
+    const major = userMajor.trim();
+    const pastJob = userPastJob.trim();
+    const backgroundLines = [
+      major ? `전공: ${major}` : null,
+      pastJob ? `이전 직장 직무: ${pastJob}` : null,
+    ].filter(Boolean);
+    const backgroundBlock = backgroundLines.length > 0
+      ? `[배경 정보]\n${backgroundLines.join('\n')}\n\n`
+      : '';
+
     const testNames = ["'홀랜드(Holland) 직업 흥미 검사'"];
-    const aiIntro = `당신은 최고의 커리어 및 심리 분석 전문가입니다. 저는 최근 ${testNames.join(', ')}을 진행했습니다. 이 데이터를 기반으로 저명한 심리학적 근거를 바탕으로 분석해주세요.\n\n`;
+    const aiIntro = `당신은 최고의 커리어 및 심리 분석 전문가입니다. 저는 최근 ${testNames.join(', ')}을 진행했습니다. 이 데이터를 기반으로 저명한 심리학적 근거를 바탕으로 분석해주세요.\n\n${backgroundBlock}`;
 
     // Job Prompt
     const basePromptJobIntro = aiIntro + `당신은 핵심 역량을 짚어내는 아주 유능한 직업 컨설턴트입니다.
@@ -532,7 +597,30 @@ export default function ChaTest() {
 
 [분석 지시]`;
 
-    const promptJob = basePromptJobIntro + `
+    const promptJob = backgroundLines.length > 0
+      ? basePromptJobIntro + `
+사용자의 성향 정보(홀랜드 유형, 직업 가치관 등)와 [배경 정보]를 바탕으로, 다음 두 가지 파트로 나누어 직업을 추천해 주세요.
+
+Part 1. 현실 맞춤형 직업 추천 (10개)
+사용자의 [배경 정보](전공, 이전 직장 직무)와 성향/가치관을 모두 종합하여, 현재의 커리어 패스를 살리거나 현실적으로 전환하기 좋은 시너지 위주의 직업 10가지를 엄선하세요.
+
+Part 2. 순수 성향 기반 직업 추천 (10개)
+[배경 정보]는 완전히 배제하고, 오직 사용자의 본연의 성향과 직업 가치관에만 초점을 맞춰 자아실현에 완벽히 부합하는 이상적인 직업 10가지를 엄선하세요.
+
+[출력 규칙]
+최종 답변에는 당신이 분석한 이유나 부연 설명을 일절 적지 마세요. 오직 아래의 형식처럼 파트를 나누어 직업명만 깔끔한 리스트 형태로 출력하세요.
+
+(예시)
+[Part 1. 현실 맞춤형 추천]
+1. 데이터 분석가
+2. 금융 상품 기획자
+...
+
+[Part 2. 순수 성향 기반 추천]
+1. 비영리 단체 코디네이터
+2. 예술 치료사
+...`
+      : basePromptJobIntro + `
 '어떤 데이터나 대상에 끌리는가(흥미)'와 '어떤 방식으로 성과를 내는가(평소 행동)'의 교집합, 홀랜드 주 강점, 직업 가치관을 모두 종합적으로 교차 분석하세요. 내부적으로 각 직업이 왜 이 사람에게 완벽하게 부합하는지 그 타당한 이유를 깊이 있게 추론하여 가장 적합한 직업 10가지를 엄선하세요.
 
 [출력 규칙]
