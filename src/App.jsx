@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import HollandTest from './pages/Holland/HollandTest';
 import BirkmanTest from './pages/Birkman/BirkmanTest';
 import TCITest from './pages/TCI/TCITest';
+import ChaTest from './pages/Cha/ChaTest';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/holland" element={<HollandTest />} />
         <Route path="/birkman" element={<BirkmanTest />} />
         <Route path="/tci" element={<TCITest />} />
+        <Route path="/cha" element={<ChaTest />} />
       </Routes>
     </BrowserRouter>
   );
