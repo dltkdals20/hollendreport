@@ -136,6 +136,10 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
   // 3단계 선택된 가치관 (Array)
   const [selectedValues, setSelectedValues] = useState([]);
 
+  // 배경 정보
+  const [userMajor, setUserMajor] = useState('');
+  const [userPastJob, setUserPastJob] = useState('');
+
   // 공유 관련 상태
   const [shareLink, setShareLink] = useState('');
   const [isSharing, setIsSharing] = useState(false);
@@ -199,6 +203,8 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
     setCurrentPageIndex(0);
     setShareLink('');
     setSharedResult(null);
+    setUserMajor('');
+    setUserPastJob('');
     // URL에서 공유 ID 제거
     window.history.replaceState({}, document.title, window.location.pathname);
   };
@@ -353,11 +359,63 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
               </div>
             </div>
             <button
-              onClick={() => setStep('keywordTest')}
+              onClick={() => setStep('backgroundInfo')}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 md:py-5 px-6 rounded-xl md:rounded-2xl transition-all duration-300 text-base md:text-lg lg:text-xl shadow-lg flex items-center justify-center gap-2 md:gap-3 mt-4"
             >
               진단 시작하기 <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 1.5 배경 정보 입력
+  if (step === 'backgroundInfo') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-4 font-sans">
+        <div className="max-w-xl w-full bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+          <div className="bg-gray-900 p-6 md:p-10 text-center text-white">
+            <h1 className="text-xl md:text-2xl font-extrabold mb-2">배경 정보 입력</h1>
+            <p className="text-gray-300 text-sm md:text-base">입력하면 AI 직업 추천 정확도가 높아져요.<br />없으면 건너뛰어도 됩니다.</p>
+          </div>
+          <div className="p-6 md:p-10 space-y-5">
+            <div>
+              <label className="font-bold text-sm md:text-base text-gray-700 mb-1 block">전공 <span className="text-gray-400 font-normal text-xs">(선택 사항)</span></label>
+              <p className="text-xs text-gray-400 mb-2">대학교 전공 계열 또는 학과</p>
+              <input
+                type="text"
+                value={userMajor}
+                onChange={(e) => setUserMajor(e.target.value)}
+                placeholder="예) 경영학, 컴퓨터공학, 심리학"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+              />
+            </div>
+            <div>
+              <label className="font-bold text-sm md:text-base text-gray-700 mb-1 block">이전 직장 직무 <span className="text-gray-400 font-normal text-xs">(선택 사항)</span></label>
+              <p className="text-xs text-gray-400 mb-2">현재 또는 이전 직장에서 맡았던 직무</p>
+              <input
+                type="text"
+                value={userPastJob}
+                onChange={(e) => setUserPastJob(e.target.value)}
+                placeholder="예) 마케팅, 영업, 개발, 디자인"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
+              />
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setStep('intro')}
+                className="flex-1 border-2 border-gray-200 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition-all text-sm md:text-base"
+              >
+                이전으로
+              </button>
+              <button
+                onClick={() => setStep('keywordTest')}
+                className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-sm md:text-base"
+              >
+                다음 <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -620,7 +678,7 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
               })}
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-6 md:mt-8">
               <button
                 onClick={() => setStep('result')}
                 disabled={selectedValues.length !== 3}
@@ -847,8 +905,8 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       valLabels = selectedValues.join(', ');
 
       // 배경 정보 (전공/이전 직무) — 선택 사항, 입력된 것만 포함
-      const major = ((tciContext?.major || birkmanContext?.major) || '').trim();
-      const pastJob = ((tciContext?.pastJob || birkmanContext?.pastJob) || '').trim();
+      const major = (userMajor || tciContext?.major || birkmanContext?.major || '').trim();
+      const pastJob = (userPastJob || tciContext?.pastJob || birkmanContext?.pastJob || '').trim();
       const backgroundLines = [
         major ? `전공: ${major}` : null,
         pastJob ? `이전 직장 직무: ${pastJob}` : null,
@@ -874,12 +932,12 @@ export default function HollandTest({ birkmanContext = null, tciContext = null }
       const basePromptJobIntro = aiIntro + `당신은 핵심 역량을 짚어내는 아주 유능한 직업 컨설턴트입니다.
 저는 홀랜드 검사 결과, 최고 강점 유형 1순위와 2순위가 각각 **[${topTypeInfo.name}]**와(과) **[${RIASEC_DESCRIPTIONS[secondType[0]].name}]**이고 직무 핵심 키워드는 **[${topKeywordLabels}]**입니다.
 직업을 선택할 때 가장 중요하게 생각하는 가치관은 **[${valLabels}]**입니다.
-${birkmanTextJob}${tciText}
+${birkmanContext ? birkmanTextJob : ''}${tciText}
 [분석 지시]`;
 
       if (backgroundLines.length > 0) {
         promptJob = basePromptJobIntro + `
-사용자의 성향 정보(버크만/홀랜드 유형, 직업 가치관 등)와 [배경 정보]를 바탕으로, 다음 두 가지 파트로 나누어 직업을 추천해 주세요.
+사용자의 성향 정보(홀랜드 유형, 직업 가치관 등)와 [배경 정보]를 바탕으로, 다음 두 가지 파트로 나누어 직업을 추천해 주세요.
 
 Part 1. 현실 맞춤형 직업 추천 (10개)
 사용자의 [배경 정보](전공, 이전 직장 직무)와 성향/가치관을 모두 종합하여, 현재의 커리어 패스를 살리거나 현실적으로 전환하기 좋은 시너지 위주의 직업 10가지를 엄선하세요.
