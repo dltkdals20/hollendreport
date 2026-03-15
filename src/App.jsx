@@ -4,6 +4,7 @@ import HollandTest from './pages/Holland/HollandTest';
 import BirkmanTest from './pages/Birkman/BirkmanTest';
 import TCITest from './pages/TCI/TCITest';
 import ChaTest from './pages/Cha/ChaTest';
+import GangdongBirkman from './pages/GangdongBirkman/GangdongBirkman';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/birkman" element={<BirkmanTest />} />
         <Route path="/tci" element={<TCITest />} />
         <Route path="/cha" element={<ChaTest />} />
+        <Route path="/gangdong" element={<GangdongBirkman />} />
       </Routes>
     </BrowserRouter>
   );
