@@ -71,23 +71,84 @@ const CONFLICT_STYLE_MAP = {
 };
 
 // ─────────────────────────────────────────────
-// MARKETING JOBS
+// NCS 공공기관 마케팅 직무 (9개)
 // ─────────────────────────────────────────────
-const MARKETING_JOBS = [
-  { id: 'campaign', name: '캠페인 마케터', emoji: '🎯', desc: '캠페인 기획·실행, 크리에이티브 방향 주도', environment: '빠른 실행 가능한 조직, 주단위 스프린트, 명확한 KPI', holland: ['E'], hollandSecondary: ['A', 'S', 'C'], needsColors: ['빨강', '초록'], stressWarn: ['노랑'], mbtiTF: ['T', 'F'], mbtiJP: ['J'], mbtiE: true },
-  { id: 'growth', name: '그로스 마케터', emoji: '📈', desc: '데이터 기반 성장 실험 및 최적화', environment: 'A/B 테스트 문화, 빠른 실행, 실험 허용', holland: ['E', 'I'], hollandSecondary: ['C'], needsColors: ['빨강'], stressWarn: ['초록'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: null },
-  { id: 'performance', name: '퍼포먼스 마케터', emoji: '⚡', desc: '광고 운영·최적화, 데이터 분석 기반 성과 극대화', environment: '성과 중심, 자율성 높은 조직, 명확한 목표', holland: ['E', 'C'], hollandSecondary: ['I'], needsColors: ['빨강'], stressWarn: ['초록', '노랑'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: false },
-  { id: 'content', name: '콘텐츠 마케터', emoji: '✍️', desc: '콘텐츠 기획·제작, 브랜드 스토리텔링', environment: '자유로운 분위기, 창의성 인정, 유연한 일정', holland: ['A'], hollandSecondary: ['E', 'S'], needsColors: ['파랑', '초록'], stressWarn: ['빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['P'], mbtiE: false },
-  { id: 'sns', name: 'SNS 마케터', emoji: '📱', desc: 'SNS 채널 운영·기획, 트렌드 반응형 콘텐츠', environment: '자율성, 빠른 실행, 트렌드 실험 허용', holland: ['A', 'S'], hollandSecondary: ['E'], needsColors: ['파랑'], stressWarn: ['빨강', '노랑'], mbtiTF: ['F', 'T'], mbtiJP: ['P'], mbtiE: true },
-  { id: 'brand', name: '브랜드 마케터', emoji: '💎', desc: '브랜드 아이덴티티 구축, 장기 전략 수립', environment: '일관성 중시, 장기 프로젝트, 창의성+체계 공존', holland: ['A', 'E'], hollandSecondary: ['S', 'I'], needsColors: ['파랑', '초록'], stressWarn: ['빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['J'], mbtiE: true },
-  { id: 'data', name: '데이터 마케터', emoji: '📊', desc: '마케팅 데이터 분석, 인사이트 도출, 리포팅', environment: '데이터 중심 의사결정, 논리적 문화, 전문성 인정', holland: ['I', 'C'], hollandSecondary: ['E'], needsColors: ['노랑', '빨강'], stressWarn: ['파랑', '초록'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: false },
-  { id: 'community', name: '커뮤니티 매니저', emoji: '🤝', desc: '유저 커뮤니티 운영, 관계 구축, 이슈 대응', environment: '협력적 문화, 수평적 조직, 팀 분위기 중시', holland: ['S', 'E'], hollandSecondary: ['A'], needsColors: ['초록', '파랑'], stressWarn: ['노랑'], mbtiTF: ['F'], mbtiJP: ['J', 'P'], mbtiE: true },
-  { id: 'pmm', name: '제품 마케터 (PMM)', emoji: '🚀', desc: 'GTM 전략 수립, 제품-마케팅 연결, 포지셔닝', environment: '제품 중심 조직, 전략적 사고 가능, 빠른 실행', holland: ['E', 'I'], hollandSecondary: ['C'], needsColors: ['빨강', '파랑'], stressWarn: ['초록'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: null },
-  { id: 'crm', name: 'CRM 마케터', emoji: '💌', desc: '고객 생애가치 관리, 이메일·자동화 마케팅', environment: '체계적 프로세스, 공정한 평가, 전문성 인정', holland: ['C', 'I'], hollandSecondary: ['E'], needsColors: ['노랑', '빨강'], stressWarn: ['파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: false },
-  { id: 'partnership', name: '파트너십 매니저', emoji: '🌐', desc: '제휴·협력 관계 구축, B2B 파트너 관리', environment: '관계 중시, 협력적 문화, 소통 활발한 조직', holland: ['S', 'E'], hollandSecondary: ['C'], needsColors: ['초록', '빨강'], stressWarn: ['노랑'], mbtiTF: ['F', 'T'], mbtiJP: ['J'], mbtiE: true },
-  { id: 'influencer', name: '인플루언서 마케터', emoji: '⭐', desc: '인플루언서 섭외·관리, 바이럴 캠페인 기획', environment: '유연한 문화, 트렌드 민감, 관계 중심', holland: ['S', 'A'], hollandSecondary: ['E'], needsColors: ['초록', '파랑'], stressWarn: ['노랑', '빨강'], mbtiTF: ['F'], mbtiJP: ['P', 'J'], mbtiE: true },
-  { id: 'creative', name: '크리에이티브 디렉터', emoji: '🎨', desc: '크리에이티브 방향 리딩, 비주얼 아이덴티티 총괄', environment: '창의성 인정, 자유로운 환경, 실험 허용', holland: ['A'], hollandSecondary: ['E', 'S'], needsColors: ['파랑', '초록'], stressWarn: ['노랑', '빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['P'], mbtiE: true },
-  { id: 'ecommerce', name: '이커머스 MD', emoji: '🛍️', desc: '온라인 상품 기획·운영, 판매 전략 수립', environment: '빠른 실행, 성과 중심, 명확한 책임 구조', holland: ['E', 'C'], hollandSecondary: ['R'], needsColors: ['빨강'], stressWarn: ['초록', '파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: null },
+const NCS_JOBS = [
+  { id: 'ncs_01', name: '시장환경 분석', category: 'ncs', emoji: '🔍', ncsCode: '01', desc: '거시 환경, 경쟁사, 자사 역량 분석', target: '공공기관 기획/연구 부서, KOTRA(대한무역투자진흥공사)', holland: ['I'], hollandSecondary: ['C', 'E'], needsColors: ['노랑'], stressWarn: ['파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: false },
+  { id: 'ncs_02', name: '마케팅 전략 수립', category: 'ncs', emoji: '🎯', ncsCode: '02', desc: '목표 시장 선정 및 포지셔닝', target: '전 공기업 마케팅/사업기획 직렬, 전통적 대기업 공채', holland: ['E'], hollandSecondary: ['I', 'C'], needsColors: ['빨강', '노랑'], stressWarn: ['초록'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: null },
+  { id: 'ncs_03', name: '고객 분석', category: 'ncs', emoji: '👥', ncsCode: '03', desc: '타겟 고객층 분류 및 소비자 행동 파악', target: '한국관광공사, 데이터·통계 기반 공공/연구 기관', holland: ['I'], hollandSecondary: ['S', 'C'], needsColors: ['노랑', '파랑'], stressWarn: ['빨강'], mbtiTF: ['T', 'F'], mbtiJP: ['J', 'P'], mbtiE: false },
+  { id: 'ncs_04', name: '상품 전략 수립', category: 'ncs', emoji: '📦', ncsCode: '04', desc: '신규 브랜드 기획, 제품 수명 주기 관리', target: '한국조폐공사, 한국인삼공사 등 자체 상품이 있는 기관', holland: ['E', 'A'], hollandSecondary: ['I'], needsColors: ['빨강', '파랑'], stressWarn: ['초록'], mbtiTF: ['T', 'F'], mbtiJP: ['J'], mbtiE: null },
+  { id: 'ncs_05', name: '가격 전략 수립', category: 'ncs', emoji: '💰', ncsCode: '05', desc: '원가 분석, 시장 가격 정책 수립', target: '한국농수산식품유통공사(aT) 등 물가/유통 관련 기관', holland: ['I', 'C'], hollandSecondary: ['E'], needsColors: ['노랑'], stressWarn: ['파랑', '초록'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: false },
+  { id: 'ncs_06', name: '유통 전략 수립', category: 'ncs', emoji: '🚚', ncsCode: '06', desc: '온/오프라인 판매 채널 확보 및 관리', target: '우체국쇼핑, 공영홈쇼핑, 농협 유통 부서', holland: ['E', 'C'], hollandSecondary: ['R', 'S'], needsColors: ['빨강', '노랑'], stressWarn: ['파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: null },
+  { id: 'ncs_07', name: '촉진 전략 수립', category: 'ncs', emoji: '📢', ncsCode: '07', desc: '광고, 홍보(PR), 이벤트 프로모션', target: '전 공공기관 홍보실, 소통협력실, 대변인실', holland: ['E', 'A'], hollandSecondary: ['S'], needsColors: ['초록', '빨강'], stressWarn: ['노랑'], mbtiTF: ['T', 'F'], mbtiJP: ['J', 'P'], mbtiE: true },
+  { id: 'ncs_08', name: '고객 관리 (CS)', category: 'ncs', emoji: '💬', ncsCode: '08', desc: '고객 만족도(CS) 조사, 불만 고객 응대', target: '국민건강보험공단, 한국전력공사 등 대국민 서비스 부서', holland: ['S'], hollandSecondary: ['E', 'C'], needsColors: ['초록'], stressWarn: ['빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['J', 'P'], mbtiE: true },
+  { id: 'ncs_09', name: '마케팅 성과 관리', category: 'ncs', emoji: '📈', ncsCode: '09', desc: '마케팅 활동의 ROI 분석 및 피드백', target: '공공기관 경영평가 부서, 성과관리팀', holland: ['I', 'C'], hollandSecondary: ['E'], needsColors: ['노랑', '빨강'], stressWarn: ['파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: false },
+];
+
+// ─────────────────────────────────────────────
+// 민간기업 실무 채용 직무 (10개)
+// ─────────────────────────────────────────────
+const PRIVATE_JOBS = [
+  { id: 'brand', name: '브랜드 마케터', category: 'private', emoji: '💎', desc: '브랜드 아이덴티티 구축, 대규모 캠페인 (IMC 기획, 스토리텔링)', target: 'F&B/패션/뷰티 대기업, 스케일업 단계의 대형 스타트업', holland: ['A', 'E'], hollandSecondary: ['S', 'I'], needsColors: ['파랑', '초록'], stressWarn: ['빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['J'], mbtiE: true },
+  { id: 'performance', name: '퍼포먼스 마케터', category: 'private', emoji: '⚡', desc: '유료 광고 집행 및 ROI 최적화 (GA4, Meta Ads, AppsFlyer)', target: '쿠팡/무신사 등 이커머스, 게임사, 퍼포먼스 마케팅 대행사', holland: ['E', 'C'], hollandSecondary: ['I'], needsColors: ['빨강'], stressWarn: ['초록', '노랑'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: false },
+  { id: 'content', name: '콘텐츠 마케터', category: 'private', emoji: '✍️', desc: 'SNS 채널 운영, 오가닉 콘텐츠 기획 (Figma, Notion, 영상 편집 툴)', target: '밀리의서재/왓챠 등 콘텐츠 플랫폼, B2C 서비스 기반 스타트업', holland: ['A'], hollandSecondary: ['E', 'S'], needsColors: ['파랑', '초록'], stressWarn: ['빨강'], mbtiTF: ['F', 'T'], mbtiJP: ['P'], mbtiE: false },
+  { id: 'crm', name: 'CRM 마케터', category: 'private', emoji: '💌', desc: '기존 고객 리텐션 관리, 알림톡/메일 캠페인 (Braze, 고객 세분화)', target: '토스/배달의민족 등 앱 기반 서비스, 구독형 모델, 멤버십 기업', holland: ['C', 'I'], hollandSecondary: ['E'], needsColors: ['노랑', '빨강'], stressWarn: ['파랑'], mbtiTF: ['T'], mbtiJP: ['J'], mbtiE: false },
+  { id: 'growth', name: '그로스 마케터', category: 'private', emoji: '📈', desc: '제품 유입~결제 퍼널 개선, A/B 테스트 (SQL, Amplitude, 데이터 대시보드)', target: '토스/당근마켓 등 유니콘 IT 플랫폼, 핀테크, 테크 기반 스타트업', holland: ['E', 'I'], hollandSecondary: ['C'], needsColors: ['빨강'], stressWarn: ['초록'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: null },
+  { id: 'data', name: '마케팅 데이터 분석가', category: 'private', emoji: '📊', desc: '데이터 추출 및 시각화, 인사이트 도출 (SQL, Python, Tableau)', target: '대규모 트래픽을 다루는 IT 대기업, 종합 광고대행사 데이터랩', holland: ['I', 'C'], hollandSecondary: ['E'], needsColors: ['노랑', '빨강'], stressWarn: ['파랑', '초록'], mbtiTF: ['T'], mbtiJP: ['J', 'P'], mbtiE: false },
+  { id: 'b2b', name: 'B2B 마케터', category: 'private', emoji: '🤝', desc: '기업 고객 세미나 기획, 세일즈 리드 발굴 (LinkedIn, 웨비나 툴, 제안서)', target: 'B2B SaaS 기업(채널톡, 잔디 등), 클라우드 및 솔루션 영업 기업', holland: ['E', 'S'], hollandSecondary: ['C'], needsColors: ['초록', '빨강'], stressWarn: ['노랑'], mbtiTF: ['T', 'F'], mbtiJP: ['J'], mbtiE: true },
+  { id: 'community', name: '커뮤니티 마케터', category: 'private', emoji: '🏘️', desc: '브랜드 팬덤 형성, 커뮤니티(디스코드, 카페 등) 여론 관리', target: '게임, Web3, 덕질 플랫폼, 팬덤 비즈니스', holland: ['S', 'A'], hollandSecondary: ['E'], needsColors: ['초록', '파랑'], stressWarn: ['노랑'], mbtiTF: ['F'], mbtiJP: ['J', 'P'], mbtiE: true },
+  { id: 'influencer', name: '인플루언서 마케터', category: 'private', emoji: '⭐', desc: '유튜버/셀럽 섭외, 브랜디드 콘텐츠 협업 단가 및 일정 조율', target: '뷰티, 패션, MCN, 엔터테인먼트, 소비재 브랜드', holland: ['S', 'A'], hollandSecondary: ['E'], needsColors: ['초록', '파랑'], stressWarn: ['노랑', '빨강'], mbtiTF: ['F'], mbtiJP: ['P', 'J'], mbtiE: true },
+  { id: 'viral', name: '바이럴 마케터', category: 'private', emoji: '🔥', desc: '맘카페, 갤러리 등 온라인 커뮤니티 내 여론 조성 및 바이럴 확산', target: '바이럴 전문 대행사, 소비재(생필품/식품) 기업', holland: ['A', 'S'], hollandSecondary: ['E'], needsColors: ['초록', '파랑'], stressWarn: ['노랑'], mbtiTF: ['F', 'T'], mbtiJP: ['P'], mbtiE: true },
+];
+
+// ─────────────────────────────────────────────
+// STRENGTH CATEGORIES
+// ─────────────────────────────────────────────
+const STRENGTH_CATEGORIES = [
+  {
+    id: 'personal',
+    label: '개인 역량',
+    emoji: '🌱',
+    desc: '나 자신의 태도와 성격에서 나오는 강점',
+    color: 'emerald',
+    chipClass: 'border-emerald-200 text-emerald-700 hover:bg-emerald-50',
+    chipSelClass: 'bg-emerald-600 border-emerald-600 text-white shadow-md',
+    headerClass: 'from-emerald-700 to-emerald-500',
+    keywords: ['끈기', '꼼꼼함', '책임감', '성실함', '유연함', '긍정적 사고', '정직함', '인내심', '겸손함', '자기관리', '도전정신', '주도성'],
+  },
+  {
+    id: 'relationship',
+    label: '관계 역량',
+    emoji: '🤝',
+    desc: '사람과의 관계에서 발휘되는 강점',
+    color: 'blue',
+    chipClass: 'border-blue-200 text-blue-700 hover:bg-blue-50',
+    chipSelClass: 'bg-blue-600 border-blue-600 text-white shadow-md',
+    headerClass: 'from-blue-700 to-blue-500',
+    keywords: ['공감', '협업능력', '경청', '소통', '중재력', '리더십', '팔로워십', '친화력', '설득력', '배려심', '네트워킹', '갈등 조율'],
+  },
+  {
+    id: 'thinking',
+    label: '사고 역량',
+    emoji: '💡',
+    desc: '문제를 바라보고 해결하는 사고 방식',
+    color: 'violet',
+    chipClass: 'border-violet-200 text-violet-700 hover:bg-violet-50',
+    chipSelClass: 'bg-violet-600 border-violet-600 text-white shadow-md',
+    headerClass: 'from-violet-700 to-violet-500',
+    keywords: ['문제해결력', '분석력', '전략적 사고', '창의성', '계획성', '실행력', '학습 의지', '비판적 사고', '논리적 사고', '기획력', '통찰력'],
+  },
+  {
+    id: 'skill',
+    label: '기술 강점',
+    emoji: '⚙️',
+    desc: '실무에서 활용 가능한 도구·기술 역량',
+    color: 'orange',
+    chipClass: 'border-orange-200 text-orange-700 hover:bg-orange-50',
+    chipSelClass: 'bg-orange-500 border-orange-500 text-white shadow-md',
+    headerClass: 'from-orange-600 to-orange-400',
+    keywords: ['AI 활용력', '영상편집', '정보 검색', '데이터 분석', '디자인', '외국어', '문서작성', '글쓰기', '발표', 'SNS 운영', '사진/영상 촬영', '엑셀/스프레드시트'],
+  },
 ];
 
 // ─────────────────────────────────────────────
@@ -114,9 +175,9 @@ function getMbtiAxes(mbtiType) {
   return { EI: mbtiType[0], TF: mbtiType[2], JP: mbtiType[3] };
 }
 
-function calculateJobScores(hollandSorted, needsColor, stressColor, mbtiType) {
+function calculateJobScores(jobs, hollandSorted, needsColor, stressColor, mbtiType) {
   const { EI, TF, JP } = getMbtiAxes(mbtiType);
-  return MARKETING_JOBS.map(job => {
+  return jobs.map(job => {
     let score = 0;
     const h1 = hollandSorted[0]?.[0];
     const h2 = hollandSorted[1]?.[0];
@@ -163,6 +224,27 @@ export default function GangdongBirkman() {
   const [miniAnswers, setMiniAnswers] = useState([]);
   const [miniCurrentQ, setMiniCurrentQ] = useState(0);
   const [isCopied, setIsCopied] = useState(null);
+  const [selectedStrengths, setSelectedStrengths] = useState({ personal: [], relationship: [], thinking: [], skill: [] });
+  const [customStrengths, setCustomStrengths] = useState({ personal: [], relationship: [], thinking: [], skill: [] });
+  const [customInputs, setCustomInputs] = useState({ personal: '', relationship: '', thinking: '', skill: '' });
+
+  const toggleStrength = (catId, keyword) => {
+    setSelectedStrengths(prev => {
+      const cur = prev[catId];
+      return { ...prev, [catId]: cur.includes(keyword) ? cur.filter(k => k !== keyword) : [...cur, keyword] };
+    });
+  };
+
+  const addCustomStrength = (catId) => {
+    const val = customInputs[catId].trim();
+    if (!val) return;
+    setCustomStrengths(prev => ({ ...prev, [catId]: [...prev[catId], val] }));
+    setCustomInputs(prev => ({ ...prev, [catId]: '' }));
+  };
+
+  const removeCustomStrength = (catId, idx) => {
+    setCustomStrengths(prev => ({ ...prev, [catId]: prev[catId].filter((_, i) => i !== idx) }));
+  };
 
   const toggleKeyword = (type, word) => {
     const key = `${type}-${word}`;
@@ -219,6 +301,9 @@ export default function GangdongBirkman() {
     setMbtiType(null);
     setMiniAnswers([]);
     setMiniCurrentQ(0);
+    setSelectedStrengths({ personal: [], relationship: [], thinking: [], skill: [] });
+    setCustomStrengths({ personal: [], relationship: [], thinking: [], skill: [] });
+    setCustomInputs({ personal: '', relationship: '', thinking: '', skill: '' });
   };
 
   // ── INTRO ──────────────────────────────────
@@ -247,10 +332,92 @@ export default function GangdongBirkman() {
               </div>
             ))}
             <button
-              onClick={() => setStep('keywordTest')}
+              onClick={() => setStep('strengthSelect')}
               className="w-full bg-slate-900 hover:bg-black text-white font-black py-5 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-lg hover:-translate-y-1"
             >
               진단 시작하기 <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── STRENGTH SELECT ────────────────────────
+  if (step === 'strengthSelect') {
+    const totalSelected = Object.values(selectedStrengths).reduce((sum, arr) => sum + arr.length, 0);
+    const totalCustom = Object.values(customStrengths).reduce((sum, arr) => sum + arr.length, 0);
+    return (
+      <div className="min-h-screen bg-slate-50 py-8 px-4 font-sans">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-slate-900 rounded-3xl p-6 text-white text-center mb-6">
+            <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">STEP 1</p>
+            <h2 className="text-2xl font-black">나의 강점 선택</h2>
+            <p className="text-slate-300 text-sm mt-1">해당하는 키워드를 선택하고, 없으면 직접 입력하세요.</p>
+            {totalSelected + totalCustom > 0 && (
+              <p className="text-emerald-400 font-black text-sm mt-2">총 {totalSelected}개 선택 {totalCustom > 0 ? `+ ${totalCustom}개 직접 입력` : ''}</p>
+            )}
+          </div>
+
+          <div className="space-y-5">
+            {STRENGTH_CATEGORIES.map(cat => (
+              <div key={cat.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className={`bg-gradient-to-r ${cat.headerClass} px-6 py-4 text-white`}>
+                  <h3 className="font-black text-lg flex items-center gap-2">{cat.emoji} {cat.label}</h3>
+                  <p className="text-white/70 text-xs">{cat.desc}</p>
+                </div>
+                <div className="p-5">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {cat.keywords.map(kw => {
+                      const isSel = selectedStrengths[cat.id].includes(kw);
+                      return (
+                        <button key={kw} onClick={() => toggleStrength(cat.id, kw)}
+                          className={`px-3 py-1.5 rounded-full text-sm font-bold border-2 transition-all ${isSel ? cat.chipSelClass : `bg-white ${cat.chipClass}`}`}>
+                          {kw}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {customStrengths[cat.id].length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {customStrengths[cat.id].map((kw, i) => (
+                          <span key={i} className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                            {kw}
+                            <button onClick={() => removeCustomStrength(cat.id, i)} className="ml-0.5 text-slate-400 hover:text-red-500 font-black leading-none">×</button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-gray-400 shrink-0">직접 입력</span>
+                      <input
+                        type="text"
+                        value={customInputs[cat.id]}
+                        onChange={e => setCustomInputs(prev => ({ ...prev, [cat.id]: e.target.value }))}
+                        onKeyDown={e => { if (e.key === 'Enter') addCustomStrength(cat.id); }}
+                        placeholder="강점 키워드 입력 후 추가"
+                        className="flex-1 text-sm py-2 px-3 rounded-xl border-2 border-gray-200 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-100 text-gray-700"
+                      />
+                      <button
+                        onClick={() => addCustomStrength(cat.id)}
+                        className="shrink-0 px-4 py-2 rounded-xl bg-slate-800 hover:bg-black text-white text-xs font-black transition-all"
+                      >추가</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-4 mt-6">
+            <button onClick={() => setStep('intro')}
+              className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-bold px-6 py-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-gray-400">
+              <ArrowLeft className="w-4 h-4" /> 이전
+            </button>
+            <button onClick={() => setStep('keywordTest')}
+              className="flex-1 bg-slate-900 hover:bg-black text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all">
+              홀랜드 키워드 검사로 이동 <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -437,6 +604,14 @@ export default function GangdongBirkman() {
                 );
               })}
             </div>
+            <div className="px-8 pb-8">
+              <button
+                onClick={() => { if (subStepIdx > 0) setBirkmanSubStep(subStepOrder[subStepIdx - 1]); else setStep('valueTest'); }}
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700 font-black transition-all"
+              >
+                <ArrowLeft className="w-5 h-5" /> 이전 단계로
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -549,11 +724,20 @@ export default function GangdongBirkman() {
     const topTypeInfo = RIASEC_DESCRIPTIONS[h1];
     const { EI, TF, JP } = getMbtiAxes(mbtiType);
 
-    const rankedJobs = calculateJobScores(hollandSorted, birkmanData.needs, birkmanData.stress, mbtiType);
-    const topJobs = rankedJobs.slice(0, 5);
+    const ncsRanked = calculateJobScores(NCS_JOBS, hollandSorted, birkmanData.needs, birkmanData.stress, mbtiType);
+    const privateRanked = calculateJobScores(PRIVATE_JOBS, hollandSorted, birkmanData.needs, birkmanData.stress, mbtiType);
+    const ncsTop3 = ncsRanked.slice(0, 3);
+    const privateTop3 = privateRanked.slice(0, 3);
 
     const topKeywordLabels = topKeywords.map(k => k.split('-')[1]).join(', ');
     const valLabels = selectedValues.join(', ');
+
+    // 강점 데이터 정리
+    const strengthSummary = STRENGTH_CATEGORIES.map(cat => {
+      const all = [...selectedStrengths[cat.id], ...customStrengths[cat.id]];
+      return all.length > 0 ? `${cat.label}: ${all.join(', ')}` : null;
+    }).filter(Boolean).join('\n');
+    const hasStrengths = strengthSummary.length > 0;
 
     const birkmanBehaviorInfo = BIRKMAN_COLOR_MAP[birkmanData.behavior];
     const birkmanNeedsInfo = BIRKMAN_COLOR_MAP[birkmanData.needs];
@@ -577,24 +761,20 @@ export default function GangdongBirkman() {
     } : null;
 
     // AI 프롬프트 생성
-    const aiBase = `당신은 최고의 마케팅 커리어 전문가입니다.\n\n[나의 진단 데이터]\n- 홀랜드 유형: 1순위 ${topTypeInfo.name}, 2순위 ${RIASEC_DESCRIPTIONS[h2].name}\n- 핵심 키워드: ${topKeywordLabels}\n- 직업 가치관: ${valLabels}\n- 버크만: 흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}, 스트레스 반응 ${birkmanData.stress}\n- MBTI: ${mbtiType || '미입력'}\n- 추천 직무 Top3: ${topJobs.slice(0, 3).map(j => j.name).join(', ')}\n\n`;
+    const aiBase = `당신은 최고의 마케팅 커리어 전문가입니다.\n\n[나의 진단 데이터]\n- 홀랜드 유형: 1순위 ${topTypeInfo.name}, 2순위 ${RIASEC_DESCRIPTIONS[h2].name}\n- 핵심 키워드: ${topKeywordLabels}\n- 직업 가치관: ${valLabels}\n${hasStrengths ? `- 나의 강점:\n${strengthSummary.split('\n').map(l => `  · ${l}`).join('\n')}\n` : ''}- 버크만: 흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}, 스트레스 반응 ${birkmanData.stress}\n- MBTI: ${mbtiType || '미입력'}\n- NCS 공공기관 추천 직무 Top3: ${ncsTop3.map(j => j.name).join(', ')}\n- 민간기업 실무 추천 직무 Top3: ${privateTop3.map(j => j.name).join(', ')}\n\n`;
 
     const prompts = [
       {
-        id: 'job', title: '🎯 나에게 맞는 직무 심층 분석',
-        text: aiBase + `[요청]\n추천된 마케팅 직무 Top3 각각에 대해 다음을 분석해주세요:\n1. 이 직무가 나에게 적합한 핵심 이유 (홀랜드+버크만 근거)\n2. 이 직무에서 내가 발휘할 수 있는 강점\n3. 주의해야 할 점\n\n[출력 규칙]\n직무별로 구조화하여 간결하게 출력하세요.`
+        id: 'strengths', title: '✨ 나의 강점 키워드 (버크만 + MBTI + 홀랜드 유형)',
+        text: `당신은 최고의 마케팅 커리어 전문가입니다.\n\n[나의 진단 데이터]\n\n홀랜드 유형: 1순위 ${topTypeInfo.name}, 2순위 ${RIASEC_DESCRIPTIONS[h2].name}\n핵심 키워드: ${topKeywordLabels}\n직업 가치관: ${valLabels}\n${hasStrengths ? `나의 강점:\n${strengthSummary.split('\n').map(l => `· ${l}`).join('\n')}\n` : ''}버크만: 흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}, 스트레스 반응 ${birkmanData.stress}\nMBTI: ${mbtiType || '미입력'}\n\n[요청]\n위 진단 데이터를 바탕으로, 나의 강점을 아래 3가지 관점에서 각각 키워드 10개씩 도출해주세요.\n\n[출력 형식]\n\n✨ 나의 강점 키워드\n\n🟡 버크만으로 보는 나의 강점\n(버크만 평소 행동 ${birkmanData.behavior} + 욕구 ${birkmanData.needs} 기반)\n키워드1 키워드2 키워드3 키워드4 키워드5 키워드6 키워드7 키워드8 키워드9 키워드10\n\n🧠 MBTI로 보는 나의 강점\n(MBTI ${mbtiType || '미입력'} 기반)\n키워드1 키워드2 키워드3 키워드4 키워드5 키워드6 키워드7 키워드8 키워드9 키워드10\n\n🎯 홀랜드 유형으로 보는 나의 강점\n(${topTypeInfo.name} 기반)\n키워드1 키워드2 키워드3 키워드4 키워드5 키워드6 키워드7 키워드8 키워드9 키워드10\n\n[작성 규칙]\n\n각 관점당 정확히 10개 키워드만 출력 (백틱으로 감싸기)`
       },
       {
-        id: 'style', title: '💪 나의 마케팅 업무 스타일 분석',
-        text: aiBase + `[요청]\n버크만 평소 행동(${birkmanData.behavior}) + 욕구(${birkmanData.needs}) 조합과 MBTI(${mbtiType || '미입력'})를 바탕으로:\n1. 내가 가장 성과를 내는 업무 방식과 환경\n2. 마케팅 현장에서 나의 강점이 빛나는 구체적인 상황\n3. 팀에서 나는 어떤 역할로 가장 빛나는가\n\n실제 마케팅 사례와 함께 설명해주세요.`
+        id: 'job', title: '🎯 나에게 맞는 직무 심층 분석 (버크만 + 홀랜드 유형)',
+        text: `당신은 최고의 마케팅 커리어 전문가입니다.\n\n[나의 진단 데이터]\n- 홀랜드 유형: 1순위 ${topTypeInfo.name}, 2순위 ${RIASEC_DESCRIPTIONS[h2].name}\n- 핵심 키워드: ${topKeywordLabels}\n- 직업 가치관: ${valLabels}\n${hasStrengths ? `- 나의 강점:\n${strengthSummary.split('\n').map(l => `  · ${l}`).join('\n')}\n` : ''}- 버크만: 흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}, 스트레스 반응 ${birkmanData.stress}\n- NCS 공공기관 추천 직무 Top3: ${ncsTop3.map(j => j.name).join(', ')}\n- 민간기업 실무 추천 직무 Top3: ${privateTop3.map(j => j.name).join(', ')}\n\n[요청]\n추천된 직무 중 (NCS + 민간기업 합산) 가장 적합한 Top3를 선정하여 다음 형식으로 정확하게 작성해주세요.\n\n---\n\n[출력 형식]\n\n## 🎯 추천 직무 TOP 3\n\n### 1️⃣ [직무명]\n\n**이 직무를 추천하는 이유**\n[홀랜드 유형 + 버크만 특성을 바탕으로 이 직무가 나에게 적합한 이유를 2-3문장으로 설명]\n\n**핵심 강점**\n- **[강점명1]:** [이 강점이 이 직무에서 어떻게 발현되는지 구체적 설명 1문장]\n- **[강점명2]:** [설명 1문장]\n- **[강점명3]:** [설명 1문장]\n\n**나를 표현하는 키워드**\n\`키워드1\` \`키워드2\` \`키워드3\` \`키워드4\`\n\n---\n\n### 2️⃣ [직무명]\n\n**이 직무를 추천하는 이유**\n[설명 2-3문장]\n\n**핵심 강점**\n- **[강점명1]:** [설명]\n- **[강점명2]:** [설명]\n- **[강점명3]:** [설명]\n\n**나를 표현하는 키워드**\n\`키워드1\` \`키워드2\` \`키워드3\` \`키워드4\`\n\n---\n\n### 3️⃣ [직무명]\n\n**이 직무를 추천하는 이유**\n[설명 2-3문장]\n\n**핵심 강점**\n- **[강점명1]:** [설명]\n- **[강점명2]:** [설명]\n- **[강점명3]:** [설명]\n\n**나를 표현하는 키워드**\n\`키워드1\` \`키워드2\` \`키워드3\` \`키워드4\`\n\n---\n\n[작성 규칙]\n\n추천 이유 규칙:\n- 홀랜드 유형(${topTypeInfo.name}, ${RIASEC_DESCRIPTIONS[h2].name})과 버크만(흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}) 특성을 명확히 연결\n- 이 직무가 나의 성향에 왜 적합한지 구체적으로 2-3문장 설명\n- 직업 가치관(${valLabels})도 자연스럽게 반영\n\n강점명 규칙:\n- "나의 강점" 섹션(${hasStrengths ? strengthSummary : '선택 없음'})에 제시된 항목들을 반드시 참고하여 작성\n- 본질적 역량으로 표현 (예: 분석력, 실행력, 이해력, 설계력, 협업 역량, 창의력, 최적화력)\n- 각 직무당 정확히 3개\n- "~력", "~능력", "~역량" 형태 사용\n\n설명 규칙:\n- 각 강점 설명에 "나의 강점" 항목들을 자연스럽게 연결하여 작성\n- 각 강점이 해당 직무에서 어떻게 구체적으로 발현되는지 1-2문장으로 작성\n- 실제 업무 행동/결과 중심으로 설명\n- 예시: "분석력: 데이터 분석 기술을 활용해 고객 행동 패턴을 구조화합니다. 논리적 사고로 문제를 분해하고 해법을 명확하게 도출합니다."\n\n키워드 규칙:\n- "나의 강점" 섹션(${hasStrengths ? strengthSummary : '선택 없음'})에서 제시된 항목들을 그대로 활용\n- 정확히 4개 (백틱으로 감싸서 표현: \`키워드\`)\n- 각 직무별로 가장 적합한 강점 조합으로 선택하여 차별화\n- 제시된 강점 외 새로운 키워드는 사용하지 않음\n\n형식 준수:\n- 위 템플릿 구조 정확히 유지\n- 이모지 숫자(1️⃣, 2️⃣, 3️⃣) 반드시 사용\n- 각 섹션 사이 구분선(---) 유지\n- 불필요한 서론, 추가 설명, 마무리 멘트 없이 바로 내용만\n- MBTI는 참고만 하고 직접 언급하지 않음`
       },
       {
-        id: 'stress', title: '⚠️ 주의할 점 & 면접 체크리스트',
-        text: aiBase + `[요청]\n버크만 스트레스 반응(${birkmanData.stress})과 갈등 패턴(${birkmanData.behavior}→${birkmanData.stress})을 바탕으로:\n1. 절대 피해야 할 회사 문화 & 조직 유형\n2. 면접 시 반드시 확인해야 할 질문 5가지\n3. 입사 후 3개월 내 주의해야 할 상황\n\n체크리스트 형태로 출력해주세요.`
-      },
-      {
-        id: 'strategy', title: '🎁 마케팅 취업 종합 전략',
-        text: aiBase + `[요청]\n전체 데이터를 통합하여:\n1. 나만의 차별화 포인트 (태도 강점 + 기술 강점)\n2. 보완해야 할 역량 우선순위 3가지\n3. 6개월 취업 준비 로드맵 (월별)\n4. 추천 회사 유형 ✅ vs 피해야 할 회사 유형 ❌\n\n실행 가능한 형태로 구체적으로 제시해주세요.`
+        id: 'style', title: '💪 나의 일하는 방식 (버크만 평소 행동 + MBTI 에너지/의사결정)',
+        text: `당신은 최고의 마케팅 커리어 전문가입니다.\n\n아래 진단 데이터를 기반으로, 마케팅 커리어 프로필을 작성해주세요.\n반드시 [출력 형식]을 정확히 따르고, [작성 규칙]을 준수해야 합니다.\n\n---\n\n[나의 진단 데이터]\n- 홀랜드 유형: 1순위 ${topTypeInfo.name}, 2순위 ${RIASEC_DESCRIPTIONS[h2].name}\n- 핵심 키워드: ${topKeywordLabels}\n- 직업 가치관: ${valLabels}\n- 버크만: 흥미 ${birkmanData.interest}, 평소 행동 ${birkmanData.behavior}, 욕구 ${birkmanData.needs}, 스트레스 반응 ${birkmanData.stress}\n- MBTI: ${mbtiType || '미입력'}\n- NCS 공공기관 추천 직무 Top3: ${ncsTop3.map(j => j.name).join(', ')}\n- 민간기업 실무 추천 직무 Top3: ${privateTop3.map(j => j.name).join(', ')}\n\n---\n\n[버크만 4가지 색상 키워드]\n\n🔴 빨강 (DOER: 실행과 결과)\n실행력, 결과 중심, 신속함, 활동성, 논리적, 실질적, 직접적, 경쟁심, 단호함, 해결사, 추진력, 실용주의, 에너지, 가시적 성과, 목표 지향, 권한 위임, 솔직함, 과업 중심, 신체 활동, 통제력\n\n🟡 노랑 (COMMUNICATOR: 관리와 체계)\n체계성, 규정 준수, 세밀함, 신중함, 공정성, 객관성, 기록/문서화, 일관성, 예측 가능성, 조직화, 관리 능력, 철저함, 검증, 절차 중시, 신뢰성, 집중력, 보수적 접근, 명확성, 정확도, 자제력\n\n🟢 초록 (TALKER: 소통과 설득)\n사교성, 설득력, 유연함, 네트워킹, 열정, 표현력, 낙천성, 사람 중심, 변화 수용, 다재다능, 동기 부여, 협상, 홍보/마케팅, 친화력, 즉흥성, 팀워크, 활발함, 정치적 감각, 분위기 메이커, 언어적 소통\n\n🔵 파랑 (THINKER: 기획과 분석)\n통찰력, 창의성, 전략적 사고, 비전 제시, 공감 능력, 사색적, 장기적 안목, 복합적 분석, 감수성, 추상적 아이디어, 기획력, 배려심, 지적 호기심, 본질 추구, 독창성, 심사숙고, 개념화, 질적 가치, 상상력, 신중한 소통\n\n---\n\n[MBTI 유형별 특성]\n- INTJ: 전략적, 독립적, 분석적, 비전 지향, 완벽주의, 장기 계획, 혁신적, 내향적 리더십\n- ENTJ: 논리적, 효율적, 목표 지향적, 주도적, 직설적, 전략적 사고, 리더십, 자율성 추구\n- INFJ: 통찰력, 이상주의, 공감력, 비전 제시, 조용한 영향력, 의미 추구, 헌신적, 직관적\n- ENFJ: 카리스마, 공감력, 동기 부여, 관계 중심 리더십, 조화 추구, 헌신적, 설득력\n- INTP: 논리적 분석, 호기심, 독창적 사고, 이론 중심, 유연한 탐구, 비판적 사고, 독립적\n- ENTP: 혁신적, 논쟁적, 가능성 탐색, 즉흥적, 도전적, 아이디어 생성, 유연한 전략\n- INFP: 가치 중심, 창의적, 공감력, 이상주의, 진정성 추구, 내면 성찰, 유연한 적응\n- ENFP: 열정적, 창의적, 사람 중심, 가능성 탐색, 즉흥적, 동기 부여, 변화 추구\n- ISTJ: 책임감, 체계적, 신뢰성, 전통 중시, 세밀함, 규칙 준수, 실용적, 꾸준함\n- ESTJ: 조직적, 결단력, 효율적 관리, 규칙 중시, 책임감, 실용적 리더십, 직설적\n- ISFJ: 헌신적, 세심함, 안정 추구, 책임감, 배려심, 전통 중시, 실용적 지원, 충성심\n- ESFJ: 사교적, 배려심, 조화 추구, 책임감, 팀 중심, 실용적 지원, 전통 중시, 공감력\n- ISTP: 분석적, 실용적, 독립적, 문제 해결, 유연한 적응, 도구 활용, 위기 대응, 관찰력\n- ESTP: 행동 지향, 현실적, 적응력, 위기 대응, 즉흥적, 설득력, 에너지, 모험적\n- ISFP: 감성적, 유연한 적응, 현재 중심, 가치 추구, 예술적 감각, 조용한 배려, 진정성\n- ESFP: 사교적, 즉흥적, 에너지, 현재 중심, 유연한 적응, 엔터테이너, 실용적, 낙천적\n\n---\n\n[출력 형식]\n\n## 🎯 당신의 마케팅 커리어 프로필\n\n### 핵심 특성: "[특성명]"\n\n[버크만 + MBTI를 통합한 1줄 설명 (30-50자)]\n\n---\n\n## 1. 남들이 보는 나의 업무 스타일\n평소 행동(버크만 평소 행동: ${birkmanData.behavior} + MBTI: ${mbtiType || '미입력'})\n\n**${birkmanData.behavior}의 특성:**\n- [특성1]: [1-2줄 설명으로 해당 색상의 특성이 마케팅 업무에서 어떻게 나타나는지 구체적으로 기술]\n- [특성2]: [1-2줄 설명]\n- [특성3]: [1-2줄 설명]\n- [특성4]: [1-2줄 설명]\n- [특성5]: [1-2줄 설명]\n\n**${mbtiType || '미입력'}의 특성:**\n- [특성1]: [1-2줄 설명으로 MBTI의 특성이 마케팅 업무에서 어떻게 나타나는지 구체적으로 기술]\n- [특성2]: [1-2줄 설명]\n- [특성3]: [1-2줄 설명]\n- [특성4]: [1-2줄 설명]\n- [특성5]: [1-2줄 설명]\n\n**마케팅에서의 실제 모습:**\n[버크만 평소 행동 색상과 MBTI가 결합되어 마케팅 현장에서 어떻게 나타나는지 3-4문장으로 구체적으로 서술. 브랜드 전략 수립, 캠페인 실행, 팀 리드, 경영진 설득 등의 실제 상황을 포함]\n\n---\n\n## 2. 내가 일에 몰입하기 위한 환경\n욕구(버크만 욕구: ${birkmanData.needs} + MBTI: ${mbtiType || '미입력'})\n\n[당신이 최고의 성과를 내기 위해 필요한 환경의 전체 설명 문단. 버크만 욕구 색상과 MBTI의 욕구를 통합하여 4-5문장으로 자연스럽게 작성]\n\n**${birkmanData.needs}의 욕구:**\n- [욕구1]: [1-2줄 설명으로 해당 색상이 원하는 환경의 구체적 특징과 마케팅 업무에서의 의미]\n- [욕구2]: [1-2줄 설명]\n- [욕구3]: [1-2줄 설명]\n- [욕구4]: [1-2줄 설명]\n- [욕구5]: [1-2줄 설명]\n\n**${mbtiType || '미입력'}의 욕구:**\n- [욕구1]: [1-2줄 설명으로 MBTI가 원하는 환경의 구체적 특징과 마케팅 업무에서의 의미]\n- [욕구2]: [1-2줄 설명]\n- [욕구3]: [1-2줄 설명]\n- [욕구4]: [1-2줄 설명]\n- [욕구5]: [1-2줄 설명]\n\n**이 환경이 없으면:**\n[욕구가 충족되지 않았을 때 구체적으로 어떤 결과가 나타나는지 2-3문장으로 서술]\n\n---\n\n## 3. 업무 효율이 떨어질 때의 징후\n스트레스 행동(버크만 스트레스: ${birkmanData.stress} + MBTI: ${mbtiType || '미입력'})\n\n[스트레스 상태에 대한 전체 설명 문단. 욕구가 충족되지 않으면 어떤 방향으로 무너지는지 3-4문장으로 자연스럽게 작성]\n\n**${birkmanData.stress}의 스트레스 반응:**\n- [반응1]: [1-2줄 설명으로 해당 색상의 스트레스가 마케팅 현장에서 어떤 구체적인 행동으로 나타나는지 기술]\n- [반응2]: [1-2줄 설명]\n- [반응3]: [1-2줄 설명]\n- [반응4]: [1-2줄 설명]\n\n**${mbtiType || '미입력'}의 스트레스 반응:**\n- [반응1]: [1-2줄 설명으로 MBTI의 스트레스가 마케팅 현장에서 어떤 구체적인 행동으로 나타나는지 기술]\n- [반응2]: [1-2줄 설명]\n- [반응3]: [1-2줄 설명]\n- [반응4]: [1-2줄 설명]\n\n**위험한 조합 (${birkmanData.stress} + ${mbtiType || '미입력'} 스트레스):**\n[버크만 스트레스 색상과 MBTI의 스트레스가 동시에 작동할 때 나타나는 구체적 결과를 2-3문장으로 서술]\n\n**현장에서 보이는 신호:**\n- [신호1]: [1-2줄 설명으로 스트레스 상태임을 보여주는 구체적인 행동 변화]\n- [신호2]: [1-2줄 설명]\n- [신호3]: [1-2줄 설명]\n- [신호4]: [1-2줄 설명]\n\n---\n\n## 4. 내가 에너지를 얻는 업무 분야\n흥미(버크만 흥미: ${birkmanData.interest} + MBTI: ${mbtiType || '미입력'})\n\n[당신이 에너지를 얻는 업무 분야에 대한 전체 설명 문단. 3-4문장으로 자연스럽게 작성]\n\n**${birkmanData.interest}의 흥미:**\n- [업무 분야명]: [1-2줄 설명으로 해당 색상이 이 분야에서 에너지를 얻는 이유와 구체적인 활동]\n- [업무 분야명]: [1-2줄 설명]\n- [업무 분야명]: [1-2줄 설명]\n- [업무 분야명]: [1-2줄 설명]\n\n**${mbtiType || '미입력'}의 흥미:**\n- [업무 분야명]: [1-2줄 설명으로 MBTI가 이 분야에서 에너지를 얻는 이유와 구체적인 활동]\n- [업무 분야명]: [1-2줄 설명]\n- [업무 분야명]: [1-2줄 설명]\n- [업무 분야명]: [1-2줄 설명]\n\n**완벽한 조합:**\n[버크만 흥미 색상(${birkmanData.interest}) + 욕구 색상(${birkmanData.needs}) + MBTI(${mbtiType || '미입력'})가 모두 함께 작동할 때 당신의 최고 상태를 2-3문장으로 서술]\n\n**직무 선택 가이드:**\n- ✅ [선택할 조건1]: [1줄 설명으로 이 조건이 당신에게 왜 필요한지]\n- ✅ [선택할 조건2]: [1줄 설명]\n- ✅ [선택할 조건3]: [1줄 설명]\n- ❌ [피할 조건1]: [1줄 설명으로 이 상황이 왜 당신을 답답하게 만드는지]\n\n---\n\n[작성 규칙]\n\n1. **반드시 지켜야 할 글의 길이와 깊이:**\n   - 각 섹션의 전체 설명 문단: 반드시 3-5문장 (100-150자 이상)\n   - 각 항목(특성/욕구/스트레스/흥미): 반드시 1-2줄의 구체적 설명 포함 (단어만 나열 금지)\n   - 하단 통합 설명(마케팅 모습/이 환경이 없으면/위험한 조합/완벽한 조합): 반드시 2-4문장\n   - 전체 결과물: 최소 2000자 이상\n   - 짧은 키워드 나열이 아닌, 분석적이고 상세한 서술형으로 작성\n\n2. **글의 톤과 어조:**\n   - 자신을 깊이 이해하는 전문가가 1:1로 분석해주는 느낌\n   - 따뜻하지만 명확하고 전문적인 어조\n   - "~합니다", "~입니다" 체 사용\n   - 교과서적 설명이 아닌, 실제 경험과 연결되는 생생한 표현\n\n3. **구체성과 현장성:**\n   - 모든 설명에서 추상적 표현 최소화\n   - 마케팅 직무에서 실제로 일어나는 구체적인 상황과 사례 포함\n   - "브랜드 전략", "캠페인 실행", "팀 리드", "고객 공감", "경영진 설득" 등 실제 업무 용어 활용\n   - "개발팀", "영업팀", "고객 성공팀" 등 실제 조직 구조 언급\n   - 팀원들이 직접 경험할 수 있는 모습과 행동으로 표현\n\n4. **변수 처리:**\n   - 버크만 색상(${birkmanData.behavior}/${birkmanData.needs}/${birkmanData.stress}/${birkmanData.interest})에 해당하는 색상의 키워드를 참조하여 작성\n   - MBTI(${mbtiType || '미입력'})에 해당하는 특성을 참조하여 작성\n   - 색상과 MBTI의 조합에 따라 내용이 달라져야 함\n\n5. **색상별 키워드 활용:**\n   - 빨강: 실행력, 결과 중심, 신속함, 경쟁심, 직설함, 가시적 성과, 즉시 행동\n   - 노랑: 체계성, 규정 준수, 세밀함, 신중함, 예측 가능성, 신뢰성, 절차\n   - 초록: 사교성, 설득력, 유연함, 팀워크, 변화 수용, 친화력, 즉흥성, 공감\n   - 파랑: 통찰력, 창의성, 전략적 사고, 비전, 공감, 장기적 안목, 심사숙고, 본질\n\n6. **통합 관점:**\n   - 각 섹션에서 버크만(색상) + MBTI를 명확히 분리 제시\n   - 하단의 통합 설명문에서는 자연스럽게 하나의 특성처럼 표현\n   - 자연스러운 서술로 두 특성이 결합된 모습을 보여줄 것\n\n7. **형식과 구조:**\n   - 모든 섹션 제목: "## 숫자. 한글제목\\n색상/MBTI 명시" 형식\n   - 각 섹션은 전체 설명 문단 → 색상별 항목 나열 → 하단 통합 설명 순서\n   - "---" 구분선으로 섹션 분명히 구분\n   - 각 항목은 bullet point(-)로 통일\n   - [출력 형식]의 구조를 정확히 따를 것`
       },
     ];
 
@@ -603,13 +783,13 @@ export default function GangdongBirkman() {
         <div className="max-w-4xl mx-auto space-y-6">
 
           {/* 헤더 */}
-          <div className="bg-gradient-to-r from-slate-900 to-slate-700 rounded-3xl p-8 text-white text-center shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-900 to-slate-700 rounded-3xl p-6 md:p-8 text-white text-center shadow-2xl">
             <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">마케팅 직무 적합도 진단 결과</p>
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <span className="text-4xl">{topTypeInfo.icon}</span>
-              <h1 className="text-3xl md:text-4xl font-black">{topTypeInfo.name}</h1>
+            <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
+              <span className="text-3xl">{topTypeInfo.icon}</span>
+              <h1 className="text-2xl md:text-4xl font-black break-keep">{topTypeInfo.name}</h1>
             </div>
-            <p className="text-slate-300 text-sm">{topTypeInfo.desc}</p>
+            <p className="text-slate-300 text-sm break-keep">{topTypeInfo.desc}</p>
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {[birkmanData.interest, birkmanData.behavior, birkmanData.needs, birkmanData.stress].map((color, i) => {
                 const info = BIRKMAN_COLOR_MAP[color];
@@ -620,25 +800,86 @@ export default function GangdongBirkman() {
               })}
               {mbtiType && <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">MBTI: {mbtiType}</span>}
             </div>
+            {hasStrengths && (
+              <div className="mt-4 pt-4 border-t border-slate-600 text-left">
+                <p className="text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">나의 강점</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {STRENGTH_CATEGORIES.map(cat =>
+                    [...selectedStrengths[cat.id], ...customStrengths[cat.id]].map(kw => (
+                      <span key={`${cat.id}-${kw}`} className="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-700 text-slate-200">{kw}</span>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Section 1: 추천 직무 */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2 mb-6"><Target className="w-6 h-6 text-red-500" /> 추천 마케팅 직무 Top 5</h2>
+          {/* Section 1: 추천 직무 — NCS */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2 mb-1 break-keep"><Target className="w-5 h-5 md:w-6 md:h-6 text-blue-600 shrink-0" /> NCS 공공기관 마케팅 직무 Top 3</h2>
+            <p className="text-xs text-blue-500 font-bold mb-6">공기업·공공기관 마케팅/홍보 직렬 기준</p>
             <div className="space-y-3">
-              {topJobs.map((job, idx) => (
-                <div key={job.id} className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${idx === 0 ? 'border-amber-300 bg-amber-50' : 'border-gray-100 bg-gray-50'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 ${idx === 0 ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-600'}`}>{idx + 1}</div>
-                  <span className="text-2xl">{job.emoji}</span>
+              {ncsTop3.map((job, idx) => (
+                <div key={job.id} className={`flex items-start gap-3 p-4 rounded-2xl border-2 transition-all ${idx === 0 ? 'border-blue-300 bg-blue-50' : 'border-gray-100 bg-gray-50'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 ${idx === 0 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}>{idx + 1}</div>
+                  <span className="text-2xl mt-0.5 shrink-0">{job.emoji}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="font-black text-gray-900">{job.name}</p>
-                    <p className="text-xs text-gray-500 break-keep">{job.desc}</p>
-                    <p className="text-xs text-gray-400 mt-0.5 break-keep">✅ {job.environment}</p>
+                    <p className="font-black text-gray-900 break-keep">{job.name}</p>
+                    <p className="text-xs text-gray-500 break-keep mt-0.5">{job.desc}</p>
+                    <p className="text-xs text-blue-600 font-bold mt-1 break-keep">🏛 {job.target}</p>
                   </div>
-                  <div className="flex gap-0.5 shrink-0">
-                    {Array.from({ length: 5 }).map((_, s) => (
-                      <Star key={s} className={`w-4 h-4 ${s < job.stars ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`} />
-                    ))}
+                  <div className="hidden md:flex gap-0.5 shrink-0">
+                    {Array.from({ length: 5 }).map((_, s) => {
+                      const fixed = [5, 4, 3.5][idx] ?? 3;
+                      const isFull = s < Math.floor(fixed);
+                      const isHalf = !isFull && s === Math.floor(fixed) && fixed % 1 >= 0.5;
+                      return (
+                        <span key={s} className="relative inline-flex w-4 h-4">
+                          <Star className="w-4 h-4 text-gray-200" />
+                          {(isFull || isHalf) && (
+                            <span className={`absolute inset-0 overflow-hidden ${isHalf ? 'w-1/2' : 'w-full'}`}>
+                              <Star className="w-4 h-4 text-blue-400 fill-blue-400" />
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 1-2: 추천 직무 — 민간기업 */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2 mb-1 break-keep"><Target className="w-5 h-5 md:w-6 md:h-6 text-red-500 shrink-0" /> 민간기업 실무 채용 직무 Top 3</h2>
+            <p className="text-xs text-red-500 font-bold mb-6">스타트업·대기업·플랫폼 마케터 채용 기준</p>
+            <div className="space-y-3">
+              {privateTop3.map((job, idx) => (
+                <div key={job.id} className={`flex items-start gap-3 p-4 rounded-2xl border-2 transition-all ${idx === 0 ? 'border-amber-300 bg-amber-50' : 'border-gray-100 bg-gray-50'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 mt-0.5 ${idx === 0 ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-600'}`}>{idx + 1}</div>
+                  <span className="text-2xl mt-0.5 shrink-0">{job.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black text-gray-900 break-keep">{job.name}</p>
+                    <p className="text-xs text-gray-500 break-keep mt-0.5">{job.desc}</p>
+                    <p className="text-xs text-amber-600 font-bold mt-1 break-keep">🏢 {job.target}</p>
+                  </div>
+                  <div className="hidden md:flex gap-0.5 shrink-0">
+                    {Array.from({ length: 5 }).map((_, s) => {
+                      const fixed = [5, 4, 3.5][idx] ?? 3;
+                      const isFull = s < Math.floor(fixed);
+                      const isHalf = !isFull && s === Math.floor(fixed) && fixed % 1 >= 0.5;
+                      return (
+                        <span key={s} className="relative inline-flex w-4 h-4">
+                          <Star className="w-4 h-4 text-gray-200" />
+                          {(isFull || isHalf) && (
+                            <span className={`absolute inset-0 overflow-hidden ${isHalf ? 'w-1/2' : 'w-full'}`}>
+                              <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
@@ -670,8 +911,8 @@ export default function GangdongBirkman() {
           </div>
 
           {/* Section 2: 일하는 방식 */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2 mb-6"><Zap className="w-6 h-6 text-yellow-500" /> 나의 일하는 방식</h2>
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2 mb-6"><Zap className="w-5 h-5 md:w-6 md:h-6 text-yellow-500 shrink-0" /> 나의 일하는 방식</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {birkmanBehaviorInfo && (
                 <div className={`p-5 rounded-2xl border ${birkmanBehaviorInfo.bgClass} ${birkmanBehaviorInfo.borderClass}`}>
@@ -715,8 +956,8 @@ export default function GangdongBirkman() {
           </div>
 
           {/* Section 3: 주의할 점 */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2 mb-6"><AlertTriangle className="w-6 h-6 text-orange-500" /> 주의할 점</h2>
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2 mb-6"><AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-orange-500 shrink-0" /> 주의할 점</h2>
             {birkmanStressInfo && (
               <div className="space-y-4">
                 <div className={`p-5 rounded-2xl border ${birkmanStressInfo.bgClass} ${birkmanStressInfo.borderClass}`}>
@@ -746,28 +987,28 @@ export default function GangdongBirkman() {
           </div>
 
           {/* Section 4: AI 프롬프트 */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 md:p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-yellow-400 p-3 rounded-2xl shadow-sm"><TrendingUp className="w-6 h-6 text-yellow-900" /></div>
-              <div>
-                <h2 className="font-black text-xl text-yellow-950">AI 컨설팅 100% 활용하기</h2>
-                <p className="text-sm text-gray-500">프롬프트를 복사해 ChatGPT나 Claude에게 더 자세히 물어보세요!</p>
+              <div className="bg-yellow-400 p-2.5 md:p-3 rounded-2xl shadow-sm shrink-0"><TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-yellow-900" /></div>
+              <div className="min-w-0">
+                <h2 className="font-black text-lg md:text-xl text-yellow-950 break-keep">AI 컨설팅 100% 활용하기</h2>
+                <p className="text-xs md:text-sm text-gray-500 break-keep">프롬프트를 복사해 ChatGPT나 Claude에게 더 자세히 물어보세요!</p>
               </div>
             </div>
             <div className="space-y-4">
               {prompts.map(p => (
                 <div key={p.id} className="bg-white rounded-2xl shadow-sm border-2 border-yellow-100 overflow-hidden">
-                  <div className="flex flex-col md:flex-row items-stretch">
-                    <div className="flex-1 p-6 bg-yellow-50/30 flex flex-col gap-2">
-                      <h4 className="font-black text-yellow-900">{p.title}</h4>
+                  <div className="flex flex-col items-stretch">
+                    <div className="flex-1 p-4 md:p-6 bg-yellow-50/30 flex flex-col gap-2">
+                      <h4 className="font-black text-yellow-900 text-sm md:text-base break-keep">{p.title}</h4>
                       <div className="relative">
                         <textarea readOnly value={p.text} className="w-full text-xs text-gray-600 bg-white p-3 rounded-xl border border-yellow-100 resize-none focus:outline-none h-20 font-mono leading-tight" />
                         <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
                       </div>
                     </div>
                     <button onClick={() => copyToClipboard(p.text, p.id)}
-                      className={`flex md:flex-col items-center justify-center gap-2 py-4 px-6 md:w-28 transition-all font-black ${isCopied === p.id ? 'bg-green-500 text-white' : 'bg-yellow-400 hover:bg-yellow-500 text-yellow-950'}`}>
-                      {isCopied === p.id ? <><Check className="w-5 h-5" /><span className="text-xs">복사됨</span></> : <><Copy className="w-5 h-5" /><span className="text-xs">복사하기</span></>}
+                      className={`flex items-center justify-center gap-2 py-3 px-6 w-full transition-all font-black ${isCopied === p.id ? 'bg-green-500 text-white' : 'bg-yellow-400 hover:bg-yellow-500 text-yellow-950'}`}>
+                      {isCopied === p.id ? <><Check className="w-5 h-5" /><span className="text-sm">복사됨</span></> : <><Copy className="w-5 h-5" /><span className="text-sm">복사하기</span></>}
                     </button>
                   </div>
                 </div>
